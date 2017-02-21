@@ -9,7 +9,7 @@ class DecomposerController extends Controller
 {
 
     /**
-     * @return Illuminate\View\View
+     * @return \Illuminate\View\View
      */
     public function index()
     {
