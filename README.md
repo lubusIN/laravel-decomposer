@@ -8,7 +8,7 @@
 
 ## Introduction
 
-Laravel Decomposer is used to decompose and list all the installed packages and their dependencies in your laravel app on the hit of a single route as shown below. This package aims to solve the following hassles we encounter during the development of a laravel project & maintaining while its up & live in the production environment :
+Laravel Decomposer decomposes and lists all the installed packages and their dependencies in your laravel app along with their versions on the hit of a single route as shown below. This package aims to solve the following hassles encountered during the development of a laravel project & maintaining while its up & live in the production environment :
 
 - To see the list of all installed packages in the laravel app directly from the browser
 - To have the log of each dependency of those packages 
