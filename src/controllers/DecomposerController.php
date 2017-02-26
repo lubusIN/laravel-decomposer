@@ -21,7 +21,7 @@ class DecomposerController extends Controller
             if ($key !== 'php') {
                 $json2 = file_get_contents(base_path("/vendor/{$key}/composer.json"));
                 $dependenciesArray = json_decode($json2, true);
-                $dependencies = $dependenciesArray['require'];
+                $dependencies = array_key_exists('require', $dependenciesArray) ? $dependenciesArray['require'] : 'No dependencies';
                 
                 $packages[] = [
                     'name' => $key,

@@ -31,9 +31,13 @@
                 <tr>
                     <td>{{ $package['name'] }} : <span class="label ld-version-tag">{{ $package['version'] }}</span></td>
                     <td>
-                        @foreach($package['dependencies'] as $dependencyName => $dependencyVersion)
-                            {{ $dependencyName }} : <span class="label ld-version-tag">{{ $dependencyVersion }}</span><br>
-                        @endforeach
+                        @if(is_array($package['dependencies']))
+                            @foreach($package['dependencies'] as $dependencyName => $dependencyVersion)
+                                {{ $dependencyName }} : <span class="label ld-version-tag">{{ $dependencyVersion }}</span><br>
+                            @endforeach
+                        @else
+                            <span class="label label-primary">{{ $package['dependencies'] }}</span>
+                        @endif                    
                     </td>           
                 </tr>
                 @endforeach
