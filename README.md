@@ -8,14 +8,13 @@
 
 ## Introduction
 
-Laravel Decomposer decomposes and lists all the installed packages and their dependencies along with the Laravel & the Server environment details your app is running. Decomposer also generates a [markdown report](https://github.com/lubusIN/laravel-decomposer/blob/master/report.md) from those details that can be used for troubleshooting purposes. All these just on the hit of a single route as shown below in the gif. This package aims to solve the following hassles:
+Laravel Decomposer decomposes and lists all the installed packages and their dependencies along with the Laravel & the Server environment details your app is running in. Decomposer also generates a [markdown report](https://github.com/lubusIN/laravel-decomposer/blob/master/report.md) from those details that can be used for troubleshooting purposes. All these just on the hit of a single route as shown below in the gif. This package aims to solve the following hassles:
 
 - To see the list of all installed packages & their dependencies in the laravel app directly from the browser
 - To get the Laravel & Server environment details on the same page with the packages list
-- To check whether all pre configurations & extensions asked by Laravel are applied and loaded or not
+- To check whether all the pre configurations & extensions asked by Laravel are applied and loaded or not
 - Suppose suddenly or after some changes your app broke, you can install Laravel Decomposer, generate & copy the [report](https://github.com/lubusIN/laravel-decomposer/blob/master/report.md) and paste it in the issue box of the respective repo you are reporting the issue to.
-- The issue might be because of a specific package or laravel in your specific dev environment. This report gives all the info required at once to the respective package developer who is working on resolving the issue to know the environment you are working on, that might help in recreating the issue.
-- For package/laravel app developers this can be very useful when collecting the information from the users reporting the issues.
+- For package/laravel app developers this can be very useful when collecting the information from the users reporting the issues. As the report gives them complete info about the environment the issue is being raised in.
 - It can also help you in other ways like suppose you have a package installed that is using illuminate/support v5.1, and an another package using illuminate/support v5.3, so getting these facts quickly by just hitting to a route can make you aware of possible unstability & conflicts so you can report that to the respective package developer.
 
 **Screenshot**
@@ -28,12 +27,12 @@ This is the initial version which will be improved actively. You can have a look
 ## Roadmap
 
 - Add a config file to allow user to control what he/she wants to see in the view
-- Check for package updates & show if any available for the respective packages or their dependencies
+- Check for updates of the installed packages & show if any available for the respective packages or their dependencies
 - Allow other packages to add their package stats in the Decomposer report
 - Compare same dependency versions for different packages & warn user about the possible conflict. (Can be achieved even now as the search results highlighting is enabled, but sure it can be done in more better way)
 - Make UI more informative & UX more better
-- Anything you want in the decomposer to be added. After all the user makes the packages worth :)
-- We have created the [issues](https://github.com/lubusIN/laravel-decomposer/issues) & [labels](https://github.com/lubusIN/laravel-decomposer/labels) with the appropriate titles , where you can contribute your ideas,suggestions to be considered or let us know if you are working on a PR for that. Always more than happy to hear & learn new things from the community.
+- Let us know if you want anything to be added in the decomposer. After all the user makes the packages worth :)
+- We have created the [issues](https://github.com/lubusIN/laravel-decomposer/issues) & [labels](https://github.com/lubusIN/laravel-decomposer/labels) with the appropriate titles , where you can contribute your ideas & suggestions or let us know if you are working on a PR for that. Always more than happy to hear & learn new things from the community.
 
 ## Installation
 
