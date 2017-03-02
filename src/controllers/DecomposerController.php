@@ -15,6 +15,7 @@ class DecomposerController extends Controller
         $json = file_get_contents(base_path('composer.json'));
         $composerArray = json_decode($json, true);
         $packagesArray = $composerArray['require'];
+        $DevPackagesArray = $composerArray['require-dev'];
 
         foreach ($packagesArray as $key => $value) {
             if ($key !== 'php') {
@@ -30,7 +31,7 @@ class DecomposerController extends Controller
             }
         }
 
-        $laravelEnv = $this->getLaravelEnv($packagesArray);
+        $laravelEnv = $this->getLaravelEnv($packagesArray,$DevPackagesArray);
 
         $serverEnv = $this->getServerEnv();
 
@@ -42,7 +43,7 @@ class DecomposerController extends Controller
      * @return array
      */
 
-    private function getLaravelEnv($packagesArray)
+    private function getLaravelEnv($packagesArray,$DevPackagesArray)
     {
         return [
             'version' => App::version(),
@@ -50,7 +51,7 @@ class DecomposerController extends Controller
             'debug_mode' => config('app.debug'),
             'storage_dir_writable' => is_writable(base_path('storage')),
             'cache_dir_writable' => is_writable(base_path('bootstrap/cache')),
-            'decomposer_version' => $packagesArray['lubusin/laravel-decomposer'],
+            'decomposer_version' => isset($packagesArray['lubusin/laravel-decomposer']) ? $packagesArray['lubusin/laravel-decomposer'] : $DevPackagesArray['lubusin/laravel-decomposer'],
             'app_size' => $this->sizeFormat($this->folderSize(base_path()))
         ];
     }

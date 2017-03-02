@@ -10,12 +10,14 @@
 
 Laravel Decomposer decomposes and lists all the installed packages and their dependencies along with the Laravel & the Server environment details your app is running in. Decomposer also generates a [markdown report](https://github.com/lubusIN/laravel-decomposer/blob/master/report.md) from those details that can be used for troubleshooting purposes. All these just on the hit of a single route as shown below in the gif. This package aims to solve the following hassles:
 
+- This can be used by your non-tech client/user of your laravel app or non-experienced dev who still dosen't uses CLI to generate the system report & send over to you so you can know the entire details of his environment.
 - To see the list of all installed packages & their dependencies in the laravel app directly from the browser
 - To get the Laravel & Server environment details on the same page with the packages list
 - To check whether all the pre configurations & extensions asked by Laravel are applied and loaded or not
 - Suppose suddenly or after some changes your app broke, you can install Laravel Decomposer, generate & copy the [report](https://github.com/lubusIN/laravel-decomposer/blob/master/report.md) and paste it in the issue box of the respective repo you are reporting the issue to.
 - For package/laravel app developers this can be very useful when collecting the information from the users reporting the issues. As the report gives them complete info about the environment the issue is being raised in.
 - It can also help you in other ways like suppose you have a package installed that is using illuminate/support v5.1, and an another package using illuminate/support v5.3, so getting these facts quickly by just hitting to a route can make you aware of possible unstability & conflicts so you can report that to the respective package developer.
+- It cuts down the troubleshooting time. For eg: Sometimes after trying all possible solutions at the end the user says 'I forgot to say I am on PHP 4'. Here Decomposer acts as the precaution & removes the dependency of querying the user for every single thing.
 
 **Screenshot**
 

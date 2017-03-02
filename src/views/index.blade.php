@@ -51,6 +51,9 @@
             #txt-report {
                 margin: 10px 0;
             }
+            #report-wrapper {
+                display: none;
+            }
         </style>
     </head>
     <body>
@@ -199,7 +202,6 @@
                 s = s.replace(/\n /,"\n");
                 document.getElementById("txt-report").value = s;
 
-                $("#report-wrapper").hide();
                 $('#btn-report').on('click', function() {   
                     $("#report-wrapper").slideToggle();
                 }); 
