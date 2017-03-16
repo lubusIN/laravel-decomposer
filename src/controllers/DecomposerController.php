@@ -7,6 +7,8 @@ use Illuminate\Routing\Controller;
 
 class DecomposerController extends Controller
 {
+    protected $packageName = 'lubusin/laravel-decomposer';
+
     /**
      * @return \Illuminate\View\View
      */
@@ -22,16 +24,18 @@ class DecomposerController extends Controller
                 $json2 = file_get_contents(base_path("/vendor/{$key}/composer.json"));
                 $dependenciesArray = json_decode($json2, true);
                 $dependencies = array_key_exists('require', $dependenciesArray) ? $dependenciesArray['require'] : 'No dependencies';
+                $devDependencies = array_key_exists('require-dev', $dependenciesArray) ? $dependenciesArray['require-dev'] : [];
 
                 $packages[] = [
                     'name' => $key,
                     'version' => $value,
-                    'dependencies' => $dependencies
+                    'dependencies' => $dependencies,
+                    'dev-dependencies' => $devDependencies
                 ];
             }
         }
 
-        $laravelEnv = $this->getLaravelEnv($packagesArray,$DevPackagesArray);
+        $laravelEnv = $this->getLaravelEnv($this->getDecomposerVersion($packagesArray, $DevPackagesArray, $packages));
 
         $serverEnv = $this->getServerEnv();
 
@@ -40,10 +44,11 @@ class DecomposerController extends Controller
 
     /**
      * Get Laravel environment details
+     * @param string $decomposerVersion
      * @return array
      */
 
-    private function getLaravelEnv($packagesArray,$DevPackagesArray)
+    private function getLaravelEnv($decomposerVersion)
     {
         return [
             'version' => App::version(),
@@ -51,9 +56,40 @@ class DecomposerController extends Controller
             'debug_mode' => config('app.debug'),
             'storage_dir_writable' => is_writable(base_path('storage')),
             'cache_dir_writable' => is_writable(base_path('bootstrap/cache')),
-            'decomposer_version' => isset($packagesArray['lubusin/laravel-decomposer']) ? $packagesArray['lubusin/laravel-decomposer'] : $DevPackagesArray['lubusin/laravel-decomposer'],
+            'decomposer_version' => $decomposerVersion,
             'app_size' => $this->sizeFormat($this->folderSize(base_path()))
         ];
+    }
+
+    /**
+     * Get current installed Decomposer version
+     * @param $packagesArray
+     * @param $devPackagesArray
+     * @param $packages
+     * @return string
+     */
+
+    private function getDecomposerVersion($packagesArray, $devPackagesArray, $packages)
+    {
+        if (isset($packagesArray[$this->packageName])) {
+            return $packagesArray[$this->packageName];
+        }
+
+        if (isset($devPackagesArray[$this->packageName])) {
+            return $devPackagesArray[$this->packageName];
+        }
+
+        foreach ($packages as $package) {
+            if (isset($package['dependencies'][$this->packageName])) {
+                return $package['dependencies'][$this->packageName];
+            }
+
+            if (isset($package['dev-dependencies'][$this->packageName])) {
+                return $package['dev-dependencies'][$this->packageName];
+            }
+        }
+
+        return 'unknown';
     }
 
     /**
