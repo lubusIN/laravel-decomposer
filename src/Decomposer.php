@@ -7,6 +7,8 @@ use App;
 class Decomposer
 {
 
+    const PACKAGE_NAME = 'lubusin/laravel-decomposer';
+
     /**
      * Get the Decomposer system report as an array
      * @return array
@@ -15,10 +17,12 @@ class Decomposer
     public static function getReportArray()
     {
         $composerArray = self::getComposerArray();
+        $packages = self::getPackagesAndDependencies($composerArray['require']);
+        $version = self::getDecomposerVersion($composerArray, $packages);
 
         return [
             'Server Environment' => self::getServerEnv(),
-            'Laravel Environment' => self::getLaravelEnv($composerArray['require'], $composerArray['require-dev']),
+            'Laravel Environment' => self::getLaravelEnv($version),
             'Installed Packages' => self::getPackagesArray($composerArray['require'])
         ];
     }
@@ -36,6 +40,8 @@ class Decomposer
 
     /**
      * Get Installed packages & their Dependencies
+     *
+     * @param $packagesArray
      * @return array
      */
 
@@ -45,14 +51,18 @@ class Decomposer
             $packageFile = base_path("/vendor/{$key}/composer.json");
 
             if ($key !== 'php' && file_exists($packageFile)) {
-                $json2 = file_get_contents($packageFile);
+                $json2             = file_get_contents($packageFile);
                 $dependenciesArray = json_decode($json2, true);
-                $dependencies = array_key_exists('require', $dependenciesArray) ? $dependenciesArray['require'] : 'No dependencies';
+                $dependencies      = array_key_exists('require',
+                    $dependenciesArray) ? $dependenciesArray['require'] : 'No dependencies';
+                $devDependencies   = array_key_exists('require-dev',
+                    $dependenciesArray) ? $dependenciesArray['require-dev'] : 'No dependencies';
 
                 $packages[] = [
-                    'name' => $key,
-                    'version' => $value,
-                    'dependencies' => $dependencies
+                    'name'             => $key,
+                    'version'          => $value,
+                    'dependencies'     => $dependencies,
+                    'dev-dependencies' => $devDependencies
                 ];
             }
         }
@@ -62,20 +72,53 @@ class Decomposer
 
     /**
      * Get Laravel environment details
+     *
+     * @param $decomposerVersion
      * @return array
      */
 
-    public static function getLaravelEnv($packagesArray, $DevPackagesArray)
+    public static function getLaravelEnv($decomposerVersion)
     {
         return [
-            'version' => App::version(),
-            'timezone' => config('app.timezone'),
-            'debug_mode' => config('app.debug'),
+            'version'              => App::version(),
+            'timezone'             => config('app.timezone'),
+            'debug_mode'           => config('app.debug'),
             'storage_dir_writable' => is_writable(base_path('storage')),
-            'cache_dir_writable' => is_writable(base_path('bootstrap/cache')),
-            'decomposer_version' => isset($packagesArray['lubusin/laravel-decomposer']) ? $packagesArray['lubusin/laravel-decomposer'] : $DevPackagesArray['lubusin/laravel-decomposer'],
-            'app_size' => self::sizeFormat(self::folderSize(base_path()))
+            'cache_dir_writable'   => is_writable(base_path('bootstrap/cache')),
+            'decomposer_version'   => $decomposerVersion,
+            'app_size'             => self::sizeFormat(self::folderSize(base_path()))
         ];
+    }
+
+    /**
+     * Get current installed Decomposer version
+     *
+     * @param $composerArray
+     * @param $packages
+     * @return string
+     */
+
+    public static function getDecomposerVersion($composerArray, $packages)
+    {
+        if (isset($composerArray['require'][self::PACKAGE_NAME])) {
+            return $composerArray['require'][self::PACKAGE_NAME];
+        }
+
+        if (isset($composerArray['require-dev'][self::PACKAGE_NAME])) {
+            return $composerArray['require-dev'][self::PACKAGE_NAME];
+        }
+
+        foreach ($packages as $package) {
+            if (isset($package['dependencies'][self::PACKAGE_NAME])) {
+                return $package['dependencies'][self::PACKAGE_NAME];
+            }
+
+            if (isset($package['dev-dependencies'][self::PACKAGE_NAME])) {
+                return $package['dev-dependencies'][self::PACKAGE_NAME];
+            }
+        }
+
+        return 'unknown';
     }
 
     /**
@@ -103,13 +146,13 @@ class Decomposer
 
     /**
      * Get Installed packages & their version numbers as an associative array
+     *
+     * @param $packagesArray
      * @return array
      */
 
-    private static function getPackagesArray($composerRequireArray)
+    private static function getPackagesArray($packagesArray)
     {
-        $packagesArray = self::getPackagesAndDependencies($composerRequireArray);
-
         foreach ($packagesArray as $packageArray) {
             $packages[$packageArray['name']] = $packageArray['version'];
         }
@@ -129,6 +172,8 @@ class Decomposer
 
     /**
      * Get the laravel app's size
+     *
+     * @param $dir
      * @return int
      */
 
@@ -143,6 +188,8 @@ class Decomposer
 
     /**
      * Format the app's size in correct units
+     *
+     * @param $bytes
      * @return string
      */
 
