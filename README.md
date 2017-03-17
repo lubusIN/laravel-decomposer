@@ -52,7 +52,9 @@ Next, add the service provider:
 // In config/app.php ( Thank you for considering this package! Have a great day :) )
 
 'providers' => [
-    // Package Service providers
+	/*
+	 * Package service providers
+	 */
     Lubusin\Decomposer\DecomposerServiceProvider::class,
 ];
 ```
@@ -62,7 +64,6 @@ Add a route in your web routes file:
 ```php
 Route::get('decompose','\Lubusin\Decomposer\Controllers\DecomposerController@index');
 ```
-
 Go to http://yourapp/decompose or the route you configured above in the routes file.
 
 ## Helpers
@@ -80,7 +81,7 @@ use Lubusin\Decomposer\Decomposer;
 $DecomposerStats = Decomposer::getReportArray();
 ```
 
-- It returns a multi-dimensional associative array with 3 keys: Server Env, Laravel Env & Installed Packages having the respective details as an associative array.
+- It returns a multi-dimensional associative array with 3 keys: Server Environment, Laravel Environment & Installed Packages having the respective details as an associative array.
 
 ## Contributing
 
