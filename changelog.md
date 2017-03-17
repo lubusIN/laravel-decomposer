@@ -1,6 +1,11 @@
-#Changelog
-
 All notable changes to the Laravel Decomposer will be documented in this file
+
+## v1.1 (17-03-2017)
+- The Decomposer system report can now be accessed as a multi-dimensional associative array anywhere in your code - [Docs](https://github.com/lubusIN/laravel-decomposer#helpers)
+- Code structure improved
+
+## v1.0.1 (02-03-2017)
+- Minor Dependency issue fixed
 
 ## v1.0 (01-03-2017)
 - Added search, sorting & pagination on the table containing name & versions of installed packages and their dependencies.
