@@ -52,9 +52,9 @@ Next, add the service provider:
 // In config/app.php ( Thank you for considering this package! Have a great day :) )
 
 'providers' => [
-	/*
-	 * Package service providers
-	 */
+    /*
+     * Package service providers
+     */
     Lubusin\Decomposer\DecomposerServiceProvider::class,
 ];
 ```
