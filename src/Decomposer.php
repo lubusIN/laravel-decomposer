@@ -6,7 +6,6 @@ use App;
 
 class Decomposer
 {
-
     const PACKAGE_NAME = 'lubusin/laravel-decomposer';
 
     /**
@@ -51,17 +50,15 @@ class Decomposer
             $packageFile = base_path("/vendor/{$key}/composer.json");
 
             if ($key !== 'php' && file_exists($packageFile)) {
-                $json2             = file_get_contents($packageFile);
+                $json2 = file_get_contents($packageFile);
                 $dependenciesArray = json_decode($json2, true);
-                $dependencies      = array_key_exists('require',
-                    $dependenciesArray) ? $dependenciesArray['require'] : 'No dependencies';
-                $devDependencies   = array_key_exists('require-dev',
-                    $dependenciesArray) ? $dependenciesArray['require-dev'] : 'No dependencies';
+                $dependencies = array_key_exists('require', $dependenciesArray) ? $dependenciesArray['require'] : 'No dependencies';
+                $devDependencies = array_key_exists('require-dev', $dependenciesArray) ? $dependenciesArray['require-dev'] : 'No dependencies';
 
                 $packages[] = [
-                    'name'             => $key,
-                    'version'          => $value,
-                    'dependencies'     => $dependencies,
+                    'name' => $key,
+                    'version' => $value,
+                    'dependencies' => $dependencies,
                     'dev-dependencies' => $devDependencies
                 ];
             }
@@ -80,13 +77,13 @@ class Decomposer
     public static function getLaravelEnv($decomposerVersion)
     {
         return [
-            'version'              => App::version(),
-            'timezone'             => config('app.timezone'),
-            'debug_mode'           => config('app.debug'),
+            'version' => App::version(),
+            'timezone' => config('app.timezone'),
+            'debug_mode' => config('app.debug'),
             'storage_dir_writable' => is_writable(base_path('storage')),
-            'cache_dir_writable'   => is_writable(base_path('bootstrap/cache')),
-            'decomposer_version'   => $decomposerVersion,
-            'app_size'             => self::sizeFormat(self::folderSize(base_path()))
+            'cache_dir_writable' => is_writable(base_path('bootstrap/cache')),
+            'decomposer_version' => $decomposerVersion,
+            'app_size' => self::sizeFormat(self::folderSize(base_path()))
         ];
     }
 
