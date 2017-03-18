@@ -13,11 +13,9 @@ class DecomposerController extends Controller
     public function index()
     {
         $composerArray = Decomposer::getComposerArray();
-
         $packages = Decomposer::getPackagesAndDependencies($composerArray['require']);
-
-        $laravelEnv = Decomposer::getLaravelEnv($composerArray['require'], $composerArray['require-dev']);
-
+        $version = Decomposer::getDecomposerVersion($composerArray, $packages);
+        $laravelEnv = Decomposer::getLaravelEnv($version);
         $serverEnv = Decomposer::getServerEnv();
 
         return view('Decomposer::index', compact('packages', 'laravelEnv', 'serverEnv'));
