@@ -1,5 +1,8 @@
 All notable changes to the Laravel Decomposer will be documented in this file
 
+## v1.1.2 (19-03-2017)
+- Dependency improvements
+
 ## v1.1.1 (18-03-2017)
 - [PR](https://github.com/lubusIN/laravel-decomposer/pull/10) merged that fixes resolving the Decomposer version from Dev & Package dependencies.
 
