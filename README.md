@@ -55,7 +55,7 @@ Next, add the service provider in `config/app.php` file:
 ];
 ```
 
-Add a route in `routes\web.php` file: 
+Add a route in `routes\web.php` file:
 
 ```php
 Route::get('decompose', '\Lubusin\Decomposer\Controllers\DecomposerController@index');
@@ -74,7 +74,7 @@ use Lubusin\Decomposer\Decomposer;
 - Then use the `getReportArray()` method as required:
 
 ```php
-$DecomposerStats = Decomposer::getReportArray();
+$decomposerStats = Decomposer::getReportArray();
 ```
 
 - It returns a multi-dimensional associative array with 3 keys: Server Environment, Laravel Environment & Installed Packages having the respective details as an associative array
