@@ -82,19 +82,26 @@
                         - Server Software: {{ $serverEnv['server_software'] }}
                         - Server OS: {{ $serverEnv['server_os'] }}
                         - Database: {{ $serverEnv['database_connection_name'] }}
-                        - SSL Installed: {!! $serverEnv['ssl_installed'] ? '&#10004;' : '&#10008' !!}
+                        - SSL Installed: {!! $serverEnv['ssl_installed'] ? '&#10004;' : '&#10008;' !!}
                         - Cache Driver: {{ $serverEnv['cache_driver'] }}
                         - Session Driver: {{ $serverEnv['session_driver'] }}
-                        - Openssl Ext: {!! $serverEnv['openssl'] ? '&#10004;' : '&#10008' !!}
-                        - PDO Ext: {!! $serverEnv['pdo'] ? '&#10004;' : '&#10008' !!}
-                        - Mbstring Ext: {!! $serverEnv['mbstring'] ? '&#10004;' : '&#10008' !!}
-                        - Tokenizer Ext: {!! $serverEnv['tokenizer']  ? '&#10004;' : '&#10008'!!}
-                        - XML Ext: {!! $serverEnv['xml'] ? '&#10004;' : '&#10008' !!}
+                        - Openssl Ext: {!! $serverEnv['openssl'] ? '&#10004;' : '&#10008;' !!}
+                        - PDO Ext: {!! $serverEnv['pdo'] ? '&#10004;' : '&#10008;' !!}
+                        - Mbstring Ext: {!! $serverEnv['mbstring'] ? '&#10004;' : '&#10008;' !!}
+                        - Tokenizer Ext: {!! $serverEnv['tokenizer']  ? '&#10004;' : '&#10008;'!!}
+                        - XML Ext: {!! $serverEnv['xml'] ? '&#10004;' : '&#10008;' !!}
 
                         ### Installed Packages & their version numbers
                         @foreach($packages as $package)
                         - {{ $package['name'] }} : {{ $package['version'] }}
                         @endforeach
+
+                        @if(!empty($extraStats))
+                        ### Extra Stats
+                        @foreach($extraStats as $extraStatKey => $extraStatValue)
+                        - {{ $extraStatKey }} : {{ is_bool($extraStatValue) ? ($extraStatValue ? '&#10004;' : '&#10008;') : $extraStatValue }}
+                        @endforeach
+                        @endif
                     </textarea>
                     <button id="copy-report" class="btn btn-info btn-sm">Copy Report</button>
                   </div>
@@ -177,6 +184,20 @@
                     <li class="list-group-item">XML Ext: {!! $serverEnv['xml'] ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>' !!}</li>                    
                   </ul>
                 </div>
+
+                @if(!empty($extraStats))
+                    <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h3 class="panel-title">Extra Stats</h3>
+                      </div>
+
+                      <ul class="list-group">
+                        @foreach($extraStats as $extraStatKey => $extraStatValue)
+                            <li class="list-group-item">{{ $extraStatKey }}: {!! is_bool($extraStatValue) ? ($extraStatValue ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>') : $extraStatValue !!}</li>                    
+                        @endforeach
+                      </ul>
+                    </div>
+                @endif
             </div> <!-- / Server Environment column -->
 
         </div> <!-- / Main Row -->

@@ -6,10 +6,22 @@ use App;
 
 class Decomposer
 {
+    /**
+     * Make Decomposer name as a constant to be used
+     * in resolving its version number
+     */
+
     const PACKAGE_NAME = 'lubusin/laravel-decomposer';
 
     /**
-     * Get the Decomposer system report as an array
+     * Initialise blank array for extra stats to be added
+     * by app or other package devs
+     */
+
+    public static $extraStats = [];
+
+    /**
+     * Get the Decomposer system report as a PHP array
      * @return array
      */
 
@@ -19,11 +31,43 @@ class Decomposer
         $packages = self::getPackagesAndDependencies($composerArray['require']);
         $version = self::getDecomposerVersion($composerArray, $packages);
 
-        return [
-            'Server Environment' => self::getServerEnv(),
-            'Laravel Environment' => self::getLaravelEnv($version),
-            'Installed Packages' => self::getPackagesArray($composerArray['require'])
-        ];
+        $reportArray['Server Environment'] = self::getServerEnv();
+        $reportArray['Laravel Environment'] = self::getLaravelEnv($version);
+        $reportArray['Installed Packages'] = self::getPackagesArray($composerArray['require']);
+
+        empty(self::getExtraStats()) ? '' : $reportArray['Extra Stats'] = self::getExtraStats();
+
+        return $reportArray;
+    }
+
+    /**
+     * Add Extra stats by app or any other package dev
+     * @param $extraStatsArray
+     */
+
+    public static function addExtraStats(array $extraStatsArray)
+    {
+        self::$extraStats = array_merge(self::$extraStats, $extraStatsArray);
+    }
+
+    /**
+     * Get the extra stats added by the app or any other package dev
+     * @return array
+     */
+
+    public static function getExtraStats()
+    {
+        return self::$extraStats;
+    }
+
+    /**
+     * Get the Decomposer system report as JSON
+     * @return json
+     */
+
+    public static function getReportJson()
+    {
+        return json_encode(self::getReportArray());
     }
 
     /**
@@ -148,8 +192,10 @@ class Decomposer
      * @return array
      */
 
-    private static function getPackagesArray($packagesArray)
+    private static function getPackagesArray($composerRequireArray)
     {
+        $packagesArray = self::getPackagesAndDependencies($composerRequireArray);
+
         foreach ($packagesArray as $packageArray) {
             $packages[$packageArray['name']] = $packageArray['version'];
         }

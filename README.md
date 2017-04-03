@@ -8,14 +8,14 @@
 
 ## Introduction
 
-Laravel Decomposer decomposes and lists all the installed packages and their dependencies along with the Laravel & the Server environment details your app is running in. Decomposer also generates a [markdown report](https://github.com/lubusIN/laravel-decomposer/blob/master/report.md) from those details that can be used for troubleshooting purposes, also it allows you to [generate the same report as an array](https://github.com/lubusIN/laravel-decomposer#helpers) anywhere in your code. All these just on the hit of a single route as shown below in the gif.
+Laravel Decomposer decomposes and lists all the installed packages and their dependencies along with the Laravel & the Server environment details your app is running in. Decomposer also generates a [markdown report](https://github.com/lubusIN/laravel-decomposer/blob/master/report.md) from those details that can be used for troubleshooting purposes, also it allows you to generate the same report [as an array](https://github.com/lubusIN/laravel-decomposer/wiki/Get-Report-as-an-array) and also [as JSON](https://github.com/lubusIN/laravel-decomposer/wiki/Get-Report-as-JSON) anywhere in your code. Laravel Package & app devs you can also [add your own personal extra stats specific for your package or your app](https://github.com/lubusIN/laravel-decomposer/wiki/Add-your-extra-stats). All these just on the hit of a single route as shown below in the gif.
 
 **Screenshot**
 
 ![Laravel Decomposer](https://cloud.githubusercontent.com/assets/11228182/23458894/0ffe7992-fea4-11e6-8441-e7550f6c3139.gif)
 
 > **Kind Attention :**
-This is the initial version which will be improved actively. You can have a look at the [Roadmap](https://github.com/lubusIN/laravel-decomposer#roadmap). If you have any suggestions for code improvements, new optional or core features or enhancements, create an issue so you,us or any open source believer can start working on it.
+You can have a look at the [Roadmap](https://github.com/lubusIN/laravel-decomposer#roadmap). If you have any suggestions for code improvements, new optional or core features or enhancements, create an issue so you,us or any open source believer can start working on it.
 
 ## Features
 - This can be used by your non-tech client/user of your laravel app or non-experienced dev who still dosen't uses CLI to generate the system report & send over to you so you can know the entire details of his environment.
@@ -30,9 +30,9 @@ This is the initial version which will be improved actively. You can have a look
 ## Roadmap
 
 - ~Allow Decomposer report to be accessed via code~ _Released in [v1.1](https://github.com/lubusIN/laravel-decomposer#helpers)_
+- ~Allow users and other packages to add their own stats in the Decomposer report~ _Released in [v1.2](https://github.com/lubusIN/laravel-decomposer/wiki/Add-your-extra-stats)_
 - Add a config file to allow user to control what he/she wants to see in the view
 - Check for updates of the installed packages & show if any available for the respective packages or their dependencies
-- Allow users and other packages to add their own stats in the Decomposer report
 - Compare same dependency versions for different packages & warn user about the possible conflict. (Can be achieved even now as the search results highlighting is enabled, but sure it can be done in more better way)
 - Make UI more informative & UX more better
 - Let us know if you want anything to be added in the decomposer. After all the user makes the packages worth :)
@@ -66,22 +66,13 @@ Route::get('decompose','\Lubusin\Decomposer\Controllers\DecomposerController@ind
 ```
 Go to http://yourapp/decompose or the route you configured above in the routes file.
 
-## Helpers
-- You might want to access the Decomposer Report in your code so that it could be passed to any third party services like Bugsnag, etc. or maybe you want to log it yourself somewhere if required.
-- The `getReportArray()` helper method has been introduced to solve the same requirement.
-- First use the Decomposer class at the top as follows:
+## Docs
 
-```php
-use Lubusin\Decomposer\Decomposer;
-```
-
-- Then use the `getReportArray()` method as required.
-
-```php
-$DecomposerStats = Decomposer::getReportArray();
-```
-
-- It returns a multi-dimensional associative array with 3 keys: Server Environment, Laravel Environment & Installed Packages having the respective details as an associative array.
+The Docs can be found in the [Wiki](https://github.com/lubusIN/laravel-decomposer/wiki) but to save you one more click, here's the index
+- [Add your own extra stats for your package or app](https://github.com/lubusIN/laravel-decomposer/wiki/Add-your-extra-stats)
+- [Get Decomposer report as markdown](https://github.com/lubusIN/laravel-decomposer/wiki/Get-Markdown-Report)
+- [Get Decomposer report as an array](https://github.com/lubusIN/laravel-decomposer/wiki/Get-Report-as-an-array)
+- [Get Decomposer report as JSON](https://github.com/lubusIN/laravel-decomposer/wiki/Get-Report-as-JSON)
 
 ## Contributing
 

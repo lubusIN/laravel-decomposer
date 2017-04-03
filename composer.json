@@ -1,6 +1,6 @@
 {
     "name": "lubusin/laravel-decomposer",
-    "description": "A Laravel package to decompose and list your installed packages and their dependencies",
+    "description": "A Laravel package to decompose your installed packages, their dependencies, your app & server environment",
     "license": "MIT",
     "authors": [
         {
