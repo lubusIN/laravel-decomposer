@@ -19,6 +19,7 @@ class Decomposer
      */
 
     public static $extraStats = [];
+    public static $serverExtras = [];
 
     /**
      * Get the Decomposer system report as a PHP array
@@ -50,6 +51,17 @@ class Decomposer
         self::$extraStats = array_merge(self::$extraStats, $extraStatsArray);
     }
 
+
+    /**
+     * Add Server stats by app or any other package dev
+     * @param $serverStatsArray
+     */
+
+    public static function addServerStats(array $serverStatsArray)
+    {
+        self::$serverExtras = array_merge(self::$serverExtras, $serverStatsArray);
+    }
+
     /**
      * Get the extra stats added by the app or any other package dev
      * @return array
@@ -58,6 +70,16 @@ class Decomposer
     public static function getExtraStats()
     {
         return self::$extraStats;
+    }
+
+    /**
+     * Get additional server info added by the app or any other package dev
+     * @return array
+     */
+
+    public static function getServerExtras()
+    {
+        return self::$serverExtras;
     }
 
     /**
@@ -166,10 +188,9 @@ class Decomposer
      * Get PHP/Server environment details
      * @return array
      */
-
     public static function getServerEnv()
     {
-        return [
+        return array_merge([
             'version' => phpversion(),
             'server_software' => $_SERVER['SERVER_SOFTWARE'],
             'server_os' => php_uname(),
@@ -182,7 +203,7 @@ class Decomposer
             'mbstring' => extension_loaded('mbstring'),
             'tokenizer' => extension_loaded('tokenizer'),
             'xml' => extension_loaded('xml')
-        ];
+        ], self::getServerExtras());
     }
 
     /**
