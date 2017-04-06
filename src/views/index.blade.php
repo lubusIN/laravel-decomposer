@@ -68,12 +68,12 @@
                     <textarea name="txt-report" id="txt-report" class="col-sm-12" rows="10" spellcheck="false" onfocus="this.select()">
                         ### Laravel Environment
 
-                        - Laravel Version: {{ $laravelEnv['version'] }}                  
-                        - Timezone: {{ $laravelEnv['timezone'] }}                  
-                        - Debug Mode: {!! $laravelEnv['debug_mode'] ? '&#10004;' : '&#10008' !!}                  
-                        - Storage Dir Writable: {!! $laravelEnv['storage_dir_writable'] ? '&#10004;' : '&#10008' !!}                  
-                        - Cache Dir Writable: {!! $laravelEnv['cache_dir_writable'] ? '&#10004;' : '&#10008' !!}                  
-                        - Decomposer Version: {{ $laravelEnv['decomposer_version'] }}                  
+                        - Laravel Version: {{ $laravelEnv['version'] }}
+                        - Timezone: {{ $laravelEnv['timezone'] }}
+                        - Debug Mode: {!! $laravelEnv['debug_mode'] ? '&#10004;' : '&#10008;' !!}
+                        - Storage Dir Writable: {!! $laravelEnv['storage_dir_writable'] ? '&#10004;' : '&#10008;' !!}
+                        - Cache Dir Writable: {!! $laravelEnv['cache_dir_writable'] ? '&#10004;' : '&#10008;' !!}
+                        - Decomposer Version: {{ $laravelEnv['decomposer_version'] }}
                         - App Size: {{ $laravelEnv['app_size'] }}
 
                         ### Server Environment
@@ -90,14 +90,19 @@
                         - Mbstring Ext: {!! $serverEnv['mbstring'] ? '&#10004;' : '&#10008;' !!}
                         - Tokenizer Ext: {!! $serverEnv['tokenizer']  ? '&#10004;' : '&#10008;'!!}
                         - XML Ext: {!! $serverEnv['xml'] ? '&#10004;' : '&#10008;' !!}
+                        @foreach($serverExtras as $extraStatKey => $extraStatValue)
+                        - {{ $extraStatKey }} : {{ is_bool($extraStatValue) ? ($extraStatValue ? '&#10004;' : '&#10008;') : $extraStatValue }}
+                        @endforeach
 
-                        ### Installed Packages & their version numbers
+                        ### Installed Packages &amp; their version numbers
+
                         @foreach($packages as $package)
                         - {{ $package['name'] }} : {{ $package['version'] }}
                         @endforeach
 
                         @if(!empty($extraStats))
-                        ### Extra Stats
+                        ### Extra Information
+
                         @foreach($extraStats as $extraStatKey => $extraStatValue)
                         - {{ $extraStatKey }} : {{ is_bool($extraStatValue) ? ($extraStatValue ? '&#10004;' : '&#10008;') : $extraStatValue }}
                         @endforeach
@@ -138,7 +143,7 @@
                                                 <li><span class="label label-primary">{{ $package['dependencies'] }}</span></li>
                                             @endif
                                         </ul>
-                                    </td>           
+                                    </td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -154,13 +159,13 @@
                   </div>
 
                   <ul class="list-group">
-                    <li class="list-group-item">Laravel Version: {{ $laravelEnv['version'] }}</li>                  
-                    <li class="list-group-item">Timezone: {{ $laravelEnv['timezone'] }}</li>                  
-                    <li class="list-group-item">Debug Mode: {!! $laravelEnv['debug_mode'] ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>' !!}</li>                  
-                    <li class="list-group-item">Storage Dir Writable: {!! $laravelEnv['storage_dir_writable'] ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>' !!}</li>                  
-                    <li class="list-group-item">Cache Dir Writable: {!! $laravelEnv['cache_dir_writable'] ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>' !!}</li>                  
-                    <li class="list-group-item">Decomposer Version: {{ $laravelEnv['decomposer_version'] }}</li>                  
-                    <li class="list-group-item">App Size: {{ $laravelEnv['app_size'] }}</li>                  
+                    <li class="list-group-item">Laravel Version: {{ $laravelEnv['version'] }}</li>
+                    <li class="list-group-item">Timezone: {{ $laravelEnv['timezone'] }}</li>
+                    <li class="list-group-item">Debug Mode: {!! $laravelEnv['debug_mode'] ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>' !!}</li>
+                    <li class="list-group-item">Storage Dir Writable: {!! $laravelEnv['storage_dir_writable'] ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>' !!}</li>
+                    <li class="list-group-item">Cache Dir Writable: {!! $laravelEnv['cache_dir_writable'] ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>' !!}</li>
+                    <li class="list-group-item">Decomposer Version: {{ $laravelEnv['decomposer_version'] }}</li>
+                    <li class="list-group-item">App Size: {{ $laravelEnv['app_size'] }}</li>
                   </ul>
                 </div>
 
@@ -181,7 +186,7 @@
                     <li class="list-group-item">PDO Ext: {!! $serverEnv['pdo'] ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>' !!}</li>
                     <li class="list-group-item">Mbstring Ext: {!! $serverEnv['mbstring'] ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>' !!}</li>
                     <li class="list-group-item">Tokenizer Ext: {!! $serverEnv['tokenizer']  ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>'!!}</li>
-                    <li class="list-group-item">XML Ext: {!! $serverEnv['xml'] ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>' !!}</li>                    
+                    <li class="list-group-item">XML Ext: {!! $serverEnv['xml'] ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>' !!}</li>
                   </ul>
                 </div>
 
@@ -193,7 +198,7 @@
 
                       <ul class="list-group">
                         @foreach($extraStats as $extraStatKey => $extraStatValue)
-                            <li class="list-group-item">{{ $extraStatKey }}: {!! is_bool($extraStatValue) ? ($extraStatValue ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>') : $extraStatValue !!}</li>                    
+                            <li class="list-group-item">{{ $extraStatKey }}: {!! is_bool($extraStatValue) ? ($extraStatValue ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>') : $extraStatValue !!}</li>
                         @endforeach
                       </ul>
                     </div>
@@ -223,16 +228,16 @@
                 s = s.replace(/\n /,"\n");
                 document.getElementById("txt-report").value = s;
 
-                $('#btn-report').on('click', function() {   
+                $('#btn-report').on('click', function() {
                     $("#report-wrapper").slideToggle();
-                }); 
+                });
 
                 $("#copy-report").on('click', function() {
                     $("#txt-report").select();
                     document.execCommand("copy");
                 });
             });
-            
+
         </script>
 
     </body>

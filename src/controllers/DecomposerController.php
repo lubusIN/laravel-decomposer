@@ -22,8 +22,10 @@ class DecomposerController extends Controller
 
         $serverEnv = Decomposer::getServerEnv();
 
+        $serverExtras = Decomposer::getServerExtras();
+
         $extraStats = Decomposer::getExtraStats();
 
-        return view('Decomposer::index', compact('packages', 'laravelEnv', 'serverEnv', 'extraStats'));
+        return view('Decomposer::index', compact('packages', 'laravelEnv', 'serverEnv', 'extraStats', 'serverExtras'));
     }
 }
