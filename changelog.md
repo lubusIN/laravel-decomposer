@@ -1,5 +1,14 @@
 All notable changes to the Laravel Decomposer will be documented in this file
 
+## v1.2.1 (06-04-2017)
+- Added following helper methods to help categorize report stats more efficiently:
+
+```php
+Decomposer::addLaravelStats($myArray); // Add to the already existing 'Laravel Env'
+Decomposer::addServerStats($myArray); // Add to the already existing 'Server Env'
+Decomposer::addExtraStats($myArray); // A new block 'Extra Info' will be added containing it
+```
+
 ## v1.2 (03-04-2017)
 - Now App & Other Package devs can also [add extra personal package or app specific stats](https://github.com/lubusIN/laravel-decomposer/wiki/Add-your-extra-stats) by using Decomposer as a dependency in their project
 - `getReportJson()` method added to get the same Decomposer report as JSON 

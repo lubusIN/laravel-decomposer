@@ -14,12 +14,13 @@ class Decomposer
     const PACKAGE_NAME = 'lubusin/laravel-decomposer';
 
     /**
-     * Initialise blank array for extra stats to be added
+     * Initialise blank arrays for extra stats to be added
      * by app or other package devs
      */
 
-    public static $extraStats = [];
+    public static $laravelExtras = [];
     public static $serverExtras = [];
+    public static $extraStats = [];
 
     /**
      * Get the Decomposer system report as a PHP array
@@ -51,9 +52,19 @@ class Decomposer
         self::$extraStats = array_merge(self::$extraStats, $extraStatsArray);
     }
 
+    /**
+     * Add Laravel specific stats by app or any other package dev
+     * @param $serverStatsArray
+     */
+
+    public static function addLaravelStats(array $laravelStatsArray)
+    {
+        self::$laravelExtras = array_merge(self::$laravelExtras, $laravelStatsArray);
+    }
+
 
     /**
-     * Add Server stats by app or any other package dev
+     * Add Server specific stats by app or any other package dev
      * @param $serverStatsArray
      */
 
@@ -80,6 +91,16 @@ class Decomposer
     public static function getServerExtras()
     {
         return self::$serverExtras;
+    }
+
+    /**
+     * Get additional laravel info added by the app or any other package dev
+     * @return array
+     */
+
+    public static function getLaravelExtras()
+    {
+        return self::$laravelExtras;
     }
 
     /**
@@ -142,7 +163,7 @@ class Decomposer
 
     public static function getLaravelEnv($decomposerVersion)
     {
-        return [
+        return array_merge([
             'version' => App::version(),
             'timezone' => config('app.timezone'),
             'debug_mode' => config('app.debug'),
@@ -150,38 +171,7 @@ class Decomposer
             'cache_dir_writable' => is_writable(base_path('bootstrap/cache')),
             'decomposer_version' => $decomposerVersion,
             'app_size' => self::sizeFormat(self::folderSize(base_path()))
-        ];
-    }
-
-    /**
-     * Get current installed Decomposer version
-     *
-     * @param $composerArray
-     * @param $packages
-     * @return string
-     */
-
-    public static function getDecomposerVersion($composerArray, $packages)
-    {
-        if (isset($composerArray['require'][self::PACKAGE_NAME])) {
-            return $composerArray['require'][self::PACKAGE_NAME];
-        }
-
-        if (isset($composerArray['require-dev'][self::PACKAGE_NAME])) {
-            return $composerArray['require-dev'][self::PACKAGE_NAME];
-        }
-
-        foreach ($packages as $package) {
-            if (isset($package['dependencies'][self::PACKAGE_NAME])) {
-                return $package['dependencies'][self::PACKAGE_NAME];
-            }
-
-            if (isset($package['dev-dependencies'][self::PACKAGE_NAME])) {
-                return $package['dev-dependencies'][self::PACKAGE_NAME];
-            }
-        }
-
-        return 'unknown';
+        ], self::getLaravelExtras());
     }
 
     /**
@@ -222,6 +212,37 @@ class Decomposer
         }
 
         return $packages;
+    }
+
+    /**
+     * Get current installed Decomposer version
+     *
+     * @param $composerArray
+     * @param $packages
+     * @return string
+     */
+
+    public static function getDecomposerVersion($composerArray, $packages)
+    {
+        if (isset($composerArray['require'][self::PACKAGE_NAME])) {
+            return $composerArray['require'][self::PACKAGE_NAME];
+        }
+
+        if (isset($composerArray['require-dev'][self::PACKAGE_NAME])) {
+            return $composerArray['require-dev'][self::PACKAGE_NAME];
+        }
+
+        foreach ($packages as $package) {
+            if (isset($package['dependencies'][self::PACKAGE_NAME])) {
+                return $package['dependencies'][self::PACKAGE_NAME];
+            }
+
+            if (isset($package['dev-dependencies'][self::PACKAGE_NAME])) {
+                return $package['dev-dependencies'][self::PACKAGE_NAME];
+            }
+        }
+
+        return 'unknown';
     }
 
     /**

@@ -3,7 +3,8 @@
 <p align="center">
 <a href="https://packagist.org/packages/lubusin/laravel-decomposer"><img src="https://poser.pugx.org/lubusin/laravel-decomposer/v/stable" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/lubusin/laravel-decomposer"><img src="https://poser.pugx.org/lubusin/laravel-decomposer/downloads" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/lubusin/laravel-decomposer"><img src="https://poser.pugx.org/lubusin/laravel-decomposer/license" alt="License"></a>
+<a href="https://github.com/lubusin/laravel-decomposer/blob/master/LICENSE.txt"><img src="https://poser.pugx.org/lubusin/laravel-decomposer/license" alt="License"></a>
+<a href="https://github.com/lubusin/laravel-decomposer/blob/master/contributing.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs"></a>
 </p>
 
 ## Introduction

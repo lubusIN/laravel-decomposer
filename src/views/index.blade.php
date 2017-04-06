@@ -75,6 +75,9 @@
                         - Cache Dir Writable: {!! $laravelEnv['cache_dir_writable'] ? '&#10004;' : '&#10008;' !!}
                         - Decomposer Version: {{ $laravelEnv['decomposer_version'] }}
                         - App Size: {{ $laravelEnv['app_size'] }}
+                        @foreach($laravelExtras as $extraStatKey => $extraStatValue)
+                        - {{ $extraStatKey }}: {{ is_bool($extraStatValue) ? ($extraStatValue ? '&#10004;' : '&#10008;') : $extraStatValue }}
+                        @endforeach
 
                         ### Server Environment
 
@@ -91,7 +94,7 @@
                         - Tokenizer Ext: {!! $serverEnv['tokenizer']  ? '&#10004;' : '&#10008;'!!}
                         - XML Ext: {!! $serverEnv['xml'] ? '&#10004;' : '&#10008;' !!}
                         @foreach($serverExtras as $extraStatKey => $extraStatValue)
-                        - {{ $extraStatKey }} : {{ is_bool($extraStatValue) ? ($extraStatValue ? '&#10004;' : '&#10008;') : $extraStatValue }}
+                        - {{ $extraStatKey }}: {{ is_bool($extraStatValue) ? ($extraStatValue ? '&#10004;' : '&#10008;') : $extraStatValue }}
                         @endforeach
 
                         ### Installed Packages &amp; their version numbers
@@ -166,6 +169,9 @@
                     <li class="list-group-item">Cache Dir Writable: {!! $laravelEnv['cache_dir_writable'] ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>' !!}</li>
                     <li class="list-group-item">Decomposer Version: {{ $laravelEnv['decomposer_version'] }}</li>
                     <li class="list-group-item">App Size: {{ $laravelEnv['app_size'] }}</li>
+                    @foreach($laravelExtras as $extraStatKey => $extraStatValue)
+                    <li class="list-group-item">{{ $extraStatKey }}: {!! is_bool($extraStatValue) ? ($extraStatValue ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>') : $extraStatValue !!}</li>
+                    @endforeach
                   </ul>
                 </div>
 
@@ -187,6 +193,9 @@
                     <li class="list-group-item">Mbstring Ext: {!! $serverEnv['mbstring'] ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>' !!}</li>
                     <li class="list-group-item">Tokenizer Ext: {!! $serverEnv['tokenizer']  ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>'!!}</li>
                     <li class="list-group-item">XML Ext: {!! $serverEnv['xml'] ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>' !!}</li>
+                    @foreach($serverExtras as $extraStatKey => $extraStatValue)
+                    <li class="list-group-item">{{ $extraStatKey }}: {!! is_bool($extraStatValue) ? ($extraStatValue ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>') : $extraStatValue !!}</li>
+                    @endforeach
                   </ul>
                 </div>
 
