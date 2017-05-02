@@ -252,7 +252,7 @@ class Decomposer
 
     private static function checkSslIsInstalled()
     {
-        return (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? true : false;
+        return (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off');
     }
 
     /**
