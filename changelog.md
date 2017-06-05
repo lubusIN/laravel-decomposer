@@ -1,5 +1,8 @@
 All notable changes to the Laravel Decomposer will be documented in this file
 
+## v1.2.2 (05-06-2017)
+- Package autoloading for Laravel 5.5
+
 ## v1.2.1 (06-04-2017)
 - Added following helper methods to help categorize report stats more efficiently:
 
