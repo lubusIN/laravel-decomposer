@@ -20,5 +20,12 @@
     "require-dev": {
         "illuminate/routing": "^5.0",
         "illuminate/http": "^5.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Lubusin\\Decomposer\\ServiceProvider"
+            ]
+        }
     }
 }
