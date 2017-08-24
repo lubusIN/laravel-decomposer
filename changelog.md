@@ -1,5 +1,8 @@
 All notable changes to the Laravel Decomposer will be documented in this file
 
+## v1.2.3 (24-08-2017)
+- Correct class name for auto-discovery in Laravel 5.5
+
 ## v1.2.2 (05-06-2017)
 - Package autoloading for Laravel 5.5
 
@@ -14,7 +17,7 @@ Decomposer::addExtraStats($myArray); // A new block 'Extra Info' will be added c
 
 ## v1.2 (03-04-2017)
 - Now App & Other Package devs can also [add extra personal package or app specific stats](https://github.com/lubusIN/laravel-decomposer/wiki/Add-your-extra-stats) by using Decomposer as a dependency in their project
-- `getReportJson()` method added to get the same Decomposer report as JSON 
+- `getReportJson()` method added to get the same Decomposer report as JSON
 - Fixed breaking of `getReportArray()` method
 
 ## v1.1.2 (19-03-2017)
