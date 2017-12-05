@@ -133,6 +133,14 @@ class Decomposer
 
     public static function getPackagesAndDependencies($packagesArray)
     {
+        $lock_file = json_decode(file_get_contents(base_path('composer.lock')));
+
+        // reformat packages for easy reference
+        $package_lock_details = [];
+        foreach($lock_file->packages as $the_package) {
+            $package_lock_details[$the_package->name] = $the_package;
+        }
+
         foreach ($packagesArray as $key => $value) {
             $packageFile = base_path("/vendor/{$key}/composer.json");
 
@@ -146,7 +154,8 @@ class Decomposer
                     'name' => $key,
                     'version' => $value,
                     'dependencies' => $dependencies,
-                    'dev-dependencies' => $devDependencies
+                    'dev-dependencies' => $devDependencies,
+                    'version-installed' => isset($package_lock_details[$key]) ? $package_lock_details[$key] : ""
                 ];
             }
         }
