@@ -136,7 +136,7 @@
 
                             @foreach($packages as $package)
                                 <tr>
-                                    <td>{{ $package['name'] }} : <span class="label ld-version-tag">{{ $package['version'] }}</span> : <span class="label ld-version-tag">{{ $package['version-installed']->version }}</span> </td>
+                                    <td>{{ $package['name'] }} : <span class="label ld-version-tag">{{ $package['version'] }}</span> : <span class="label ld-version-tag">{{ isset($package['version-installed']->version) ? $package['version-installed']->version : "N/A" }}</span> </td>
                                     <td>
                                         <ul>
                                             @if(is_array($package['dependencies']))
