@@ -62,7 +62,6 @@ class Decomposer
         self::$laravelExtras = array_merge(self::$laravelExtras, $laravelStatsArray);
     }
 
-
     /**
      * Add Server specific stats by app or any other package dev
      * @param $serverStatsArray
@@ -146,7 +145,7 @@ class Decomposer
                     'name' => $key,
                     'version' => $value,
                     'dependencies' => $dependencies,
-                    'dev-dependencies' => $devDependencies
+                    'dev-dependencies' => $devDependencies,
                 ];
             }
         }
@@ -170,7 +169,7 @@ class Decomposer
             'storage_dir_writable' => is_writable(base_path('storage')),
             'cache_dir_writable' => is_writable(base_path('bootstrap/cache')),
             'decomposer_version' => $decomposerVersion,
-            'app_size' => self::sizeFormat(self::folderSize(base_path()))
+            'app_size' => self::sizeFormat(self::folderSize(base_path())),
         ], self::getLaravelExtras());
     }
 
@@ -192,7 +191,7 @@ class Decomposer
             'pdo' => extension_loaded('pdo'),
             'mbstring' => extension_loaded('mbstring'),
             'tokenizer' => extension_loaded('tokenizer'),
-            'xml' => extension_loaded('xml')
+            'xml' => extension_loaded('xml'),
         ], self::getServerExtras());
     }
 
@@ -265,7 +264,10 @@ class Decomposer
     private static function folderSize($dir)
     {
         $size = 0;
-        foreach (glob(rtrim($dir, '/').'/*', GLOB_NOSORT) as $each) {
+        foreach (glob(rtrim($dir, '/') . '/*', GLOB_NOSORT) as $each) {
+            if (!is_file($each) && in_array($each, config('decomposer.folders_exclude'))) {
+                continue;
+            }
             $size += is_file($each) ? filesize($each) : self::folderSize($each);
         }
         return $size;
