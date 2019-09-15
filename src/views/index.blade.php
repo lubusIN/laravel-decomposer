@@ -128,14 +128,15 @@
                         <table id="decomposer" class="table table-hover table-bordered">
                             <thead>
                                 <tr>
-                                    <th>Package Name : Version</th>
+                                    <th>Package Name : Version : Version Installed</th>
                                     <th>Dependency Name : Version</th>
                                 </tr>
                             </thead>
                             <tbody>
+
                             @foreach($packages as $package)
                                 <tr>
-                                    <td>{{ $package['name'] }} : <span class="label ld-version-tag">{{ $package['version'] }}</span></td>
+                                    <td>{{ $package['name'] }} : <span class="label ld-version-tag">{{ $package['version'] }}</span> : <span class="label ld-version-tag">{{ isset($package['version-installed']->version) ? $package['version-installed']->version : "N/A" }}</span> </td>
                                     <td>
                                         <ul>
                                             @if(is_array($package['dependencies']))

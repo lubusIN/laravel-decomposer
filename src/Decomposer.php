@@ -133,6 +133,16 @@ class Decomposer
 
     public static function getPackagesAndDependencies($packagesArray)
     {
+        $packageLockDetails = [];
+        if (file_exists(base_path('composer.lock'))) {
+            $lockFile = json_decode(file_get_contents(base_path('composer.lock')));
+
+            $packageLockDetails = [];
+            foreach ($lockFile->packages as $package) {
+                $packageLockDetails[$package->name] = $package;
+            }
+        }
+
         foreach ($packagesArray as $key => $value) {
             $packageFile = base_path("/vendor/{$key}/composer.json");
 
@@ -146,7 +156,8 @@ class Decomposer
                     'name' => $key,
                     'version' => $value,
                     'dependencies' => $dependencies,
-                    'dev-dependencies' => $devDependencies
+                    'dev-dependencies' => $devDependencies,
+                    'version-installed' => isset($packageLockDetails[$key]) ? $packageLockDetails[$key] : ""
                 ];
             }
         }
@@ -265,7 +276,7 @@ class Decomposer
     private static function folderSize($dir)
     {
         $size = 0;
-        foreach (glob(rtrim($dir, '/').'/*', GLOB_NOSORT) as $each) {
+        foreach (glob(rtrim($dir, '/') . '/*', GLOB_NOSORT) as $each) {
             $size += is_file($each) ? filesize($each) : self::folderSize($each);
         }
         return $size;
