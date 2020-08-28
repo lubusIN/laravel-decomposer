@@ -29,7 +29,7 @@ class DecomposerServiceProvider extends ServiceProvider
     /**
      * @return string
      */
-    protected function getConfigFile(): string
+    protected function getConfigFile()
     {
         return __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'decomposer.php';
     }
