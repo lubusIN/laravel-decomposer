@@ -12,7 +12,7 @@ class DecomposerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadViewsFrom(__DIR__ . '/views', 'Decomposer');
+        $this->loadViewsFrom(__DIR__.'/views', 'decomposer');
         $this->publishes([
             $this->getConfigFile() => config_path('decomposer.php'),
         ], 'config');
@@ -31,6 +31,6 @@ class DecomposerServiceProvider extends ServiceProvider
      */
     protected function getConfigFile(): string
     {
-        return __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'decomposer.php';
+        return __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'decomposer.php';
     }
 }
