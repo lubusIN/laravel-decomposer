@@ -7,6 +7,18 @@
 <a href="https://github.com/lubusin/laravel-decomposer/blob/master/contributing.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs"></a>
 </p>
 
+- [Introduction](#introduction)
+- [Features](#features)
+- [Roadmap](#roadmap)
+- [Installation](#installation)
+- [Docs](#docs)
+- [Contributing](#contributing)
+- [Security](#security)
+- [Credits](#credits)
+- [About LUBUS](#about-lubus)
+- [License](#license)
+- [Changelog](#changelog)
+
 ## Introduction
 
 Laravel Decomposer decomposes and lists all the installed packages and their dependencies along with the Laravel & the Server environment details your app is running in. Decomposer also generates a [markdown report](https://github.com/lubusIN/laravel-decomposer/blob/master/report.md) from those details that can be used for troubleshooting purposes, also it allows you to generate the same report [as an array](https://github.com/lubusIN/laravel-decomposer/wiki/Get-Report-as-an-array) and also [as JSON](https://github.com/lubusIN/laravel-decomposer/wiki/Get-Report-as-JSON) anywhere in your code. Laravel Package & app devs you can also [add your own personal extra stats specific for your package or your app](https://github.com/lubusIN/laravel-decomposer/wiki/Add-your-extra-stats). All these just on the hit of a single route as shown below in the gif.
