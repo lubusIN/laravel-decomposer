@@ -265,7 +265,7 @@ class Decomposer
     private static function folderSize($dir)
     {
         $size = 0;
-        foreach (glob(rtrim($dir, '/').'/*', GLOB_NOSORT) as $each) {
+        foreach (glob(rtrim($dir, '/') . '/*', GLOB_NOSORT) as $each) {
             $size += is_file($each) ? filesize($each) : self::folderSize($each);
         }
         return $size;
@@ -298,5 +298,21 @@ class Decomposer
         } else {
             return $bytes . ' B';
         }
+    }
+
+    /**
+     * Return the svg code from the filename and also adds classes to the svg file.
+     * 
+     * @param $name
+     * @param $class
+     * 
+     * @return string
+     */
+    public static function svg($name, $class = '')
+    {
+        $path = __DIR__ . '/svg/' . $name . ".svg";
+        if (!file_exists($path)) return '';
+        $svg = file_get_contents($path);
+        return str_replace('<svg', "<svg class=\"{$class}\"", $svg);
     }
 }

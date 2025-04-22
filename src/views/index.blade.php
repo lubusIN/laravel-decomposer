@@ -1,71 +1,22 @@
-<!DOCTYPE html>
-<html lang="{{ config('app.locale') }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<div class="w-full">
+    <div class="w-full">
+        <div class="border-l-4 border-red-500 bg-custom-red p-4 rounded-md shadow-sm" x-data="reportComponent()" x-init="init()">
+            <p class="mb-4 font-normal">Please share this information for troubleshooting:</p>
+            <div class="flex flex-wrap items-center gap-2 mb-4">
+                <button id="btn-report" @click="showReport = !showReport" class="bg-gray-700 text-white text-sm px-4 py-2 rounded cursor-pointer hover:bg-red-500">
+                    Get System Report
+                </button>
+                <a href="https://github.com/lubusIN/laravel-decomposer/blob/master/report.md" target="_blank" id="btn-about-report"
+                    class="bg-white border-black hover:bg-white text-black text-sm px-4 py-2 rounded border">
+                    Understand Report
+                </a>
+            </div>
 
-        <title>Laravel Decomposer</title>
-
-        <!-- Bootstrap & Datatables -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css">
-
-        <!-- Styles -->
-        <style>
-            body {
-                padding: 25px;
-            }
-            .ld-version-tag {
-                background-color: #F5716C;
-            }
-            .bs-callout {
-                padding: 20px;
-                margin:  0  0 20px 0;
-                border: 1px solid #eee;
-                border-left-width: 5px;
-                border-radius: 3px;
-            }
-            .bs-callout-primary {
-                border-left-color: #428bca;
-            }
-            .bs-callout-primary h4 {
-                color: #428bca;
-            }
-            .glyphicon-ok {
-                color: #7ad03a;
-            }
-            .glyphicon-remove {
-                color: red;
-            }
-            .panel-title {
-                font-weight: 600;
-            }
-            .table th {
-                color: #757575;
-            }
-            table.dataTable span.highlight {
-              background-color: #FFF176;
-              border-radius: 0.28571429rem;
-            }
-            #txt-report {
-                margin: 10px 0;
-            }
-            #report-wrapper {
-                display: none;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="bs-callout bs-callout-primary">
-                  <p>Please share this information for troubleshooting:</p>
-                  <button id="btn-report" class="btn btn-info btn-sm">Get System Report</button>
-                  <a href="https://github.com/lubusIN/laravel-decomposer/blob/master/report.md" target="_blank" id="btn-about-report" class="btn btn-default btn-sm">Understand Report</a href="">
-
-                  <div id="report-wrapper">
-                    <textarea name="txt-report" id="txt-report" class="col-sm-12" rows="10" spellcheck="false" onfocus="this.select()">
+            <div id="report-wrapper" x-show="showReport" x-transition.duration.400ms.ease-in-out>
+                <textarea name="txt-report" id="txt-report"
+                    class="w-full border rounded p-2 text-sm font-mono text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    rows="10" spellcheck="false" x-ref="reportText"
+                    @focus="$refs.reportText.select()">
                         ### Laravel Environment
 
                         - Laravel Version: {{ $laravelEnv['version'] }}
@@ -107,147 +58,366 @@
                         ### Extra Information
 
                         @foreach($extraStats as $extraStatKey => $extraStatValue)
-                        - {{ $extraStatKey }} : {{ is_bool($extraStatValue) ? ($extraStatValue ? '&#10004;' : '&#10008;') : $extraStatValue }}
+                        - {{ $extraStatKey }} : {{ is_bool($extraStatValue) ? ($extraStatValue ? '&#10004;' : '&#10008;')
+                            
+                            : $extraStatValue }}
                         @endforeach
                         @endif
                     </textarea>
-                    <button id="copy-report" class="btn btn-info btn-sm">Copy Report</button>
-                  </div>
-                </div>
+
+                <button id="copy-report" type="button" @click="copyReport" class="mt-4 bg-black hover:bg-red-500 text-white text-sm px-4 py-2 rounded cursor-pointer">
+                    Copy Report
+                </button>
             </div>
         </div>
+    </div>
+</div>
 
-        <div class="row"> <!-- Main Row -->
+<div class="flex flex-col lg:flex-row gap-6 mt-6">
 
-            <div class="col-sm-8"> <!-- Package & Dependency column -->
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Installed Packages and their Dependencies</h3>
+    <!-- Package & Dependency column -->
+    <div class="w-full lg:w-2/3">
+        <div class="bg-white rounded-md overflow-hidden border border-gray-200">
+            <div class="bg-gray-50 px-4 py-3 border-b border-gray-200 flex flex-wrap items-center gap-2">
+                <span class="text-gray-700"> {!! $svgIcons['composer'] !!} </span>
+                <h3 class="text-lg text-gray-700 font-normal">Installed Packages</h3>
+            </div>
+            <div class="p-4 overflow-x-auto">
+                <div x-data="dataTable()" x-init="init()" class="overflow-x-auto">
+                    <div class="flex justify-between items-center mb-4">
+                        <input type="text" x-model="search" placeholder="Search…" class="border border-gray-300 rounded px-3 py-2 focus:outline-none" />
+                        <span class="text-sm text-gray-600" x-text="'Showing ' + filteredData.length + ' results'"></span>
                     </div>
-                    <div class="panel-body">
-                        <table id="decomposer" class="table table-hover table-bordered">
-                            <thead>
+
+                    <table class="min-w-full divide-y divide-gray-300 text-sm">
+                        <thead class="bg-gray-50 text-left text-gray-700 font-medium">
+                            <tr>
+                                <th class="px-4 py-2">Package Name : Version</th>
+                                <th class="px-4 py-2">Dependency Name : Version</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <template x-for="row in paginatedData()" :key="row.name">
                                 <tr>
-                                    <th>Package Name : Version</th>
-                                    <th>Dependency Name : Version</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($packages as $package)
-                                <tr>
-                                    <td>{{ $package['name'] }} : <span class="label ld-version-tag">{{ $package['version'] }}</span></td>
-                                    <td>
-                                        <ul>
-                                            @if(is_array($package['dependencies']))
-                                                @foreach($package['dependencies'] as $dependencyName => $dependencyVersion)
-                                                    <li>{{ $dependencyName }} : <span class="label ld-version-tag">{{ $dependencyVersion }}</span></li>
-                                                @endforeach
-                                            @else
-                                                <li><span class="label label-primary">{{ $package['dependencies'] }}</span></li>
-                                            @endif
+                                    <td class="px-4 py-2 whitespace-nowrap">
+                                        <span x-text="row.name"></span> :
+                                        <span class="inline-block bg-custom-red text-black text-xs px-2 py-1 rounded-md" x-text="row.version"></span>
+                                    </td>
+                                    <td class="px-4 py-2">
+                                        <ul class="list-disc ml-4 h-36 overflow-y-auto pr-2">
+                                            <template x-for="dep in row.dependencies" :key="dep.name">
+                                                <li>
+                                                    <span class="text-gray-500" x-text="dep.name"></span> :
+                                                    <span class="inline-block bg-gray-200 my-1 text-gray-800 text-xs px-2 py-1 rounded-md" x-text="dep.version"></span>
+                                                </li>
+                                            </template>
                                         </ul>
                                     </td>
                                 </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
+                            </template>
+                        </tbody>
+                    </table>
+
+                    <!-- Pagination -->
+                    <div class="flex justify-between items-center mt-4">
+                        <button
+                            class="px-3 py-1 border rounded"
+                            x-show="page > 1"
+                            @click="page--">
+                            Previous
+                        </button>
+
+                        <div class="text-sm">
+                            Page <span x-text="page"></span> of <span x-text="totalPages()"></span>
+                        </div>
+
+                        <button
+                            class="px-3 py-1 border rounded"
+                            x-show="page < totalPages()"
+                            @click="page++">
+                            Next
+                        </button>
                     </div>
                 </div>
-            </div> <!-- / Package & Dependency column -->
+            </div>
+        </div>
+    </div>
+    <!-- / Package & Dependency column -->
 
-            <div class="col-sm-4"> <!-- Server Environment column -->
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                    <h3 class="panel-title">Laravel Environment</h3>
-                  </div>
-
-                  <ul class="list-group">
-                    <li class="list-group-item">Laravel Version: {{ $laravelEnv['version'] }}</li>
-                    <li class="list-group-item">Timezone: {{ $laravelEnv['timezone'] }}</li>
-                    <li class="list-group-item">Debug Mode: {!! $laravelEnv['debug_mode'] ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>' !!}</li>
-                    <li class="list-group-item">Storage Dir Writable: {!! $laravelEnv['storage_dir_writable'] ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>' !!}</li>
-                    <li class="list-group-item">Cache Dir Writable: {!! $laravelEnv['cache_dir_writable'] ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>' !!}</li>
-                    <li class="list-group-item">Decomposer Version: {{ $laravelEnv['decomposer_version'] }}</li>
-                    <li class="list-group-item">App Size: {{ $laravelEnv['app_size'] }}</li>
-                    @foreach($laravelExtras as $extraStatKey => $extraStatValue)
-                    <li class="list-group-item">{{ $extraStatKey }}: {!! is_bool($extraStatValue) ? ($extraStatValue ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>') : $extraStatValue !!}</li>
-                    @endforeach
-                  </ul>
-                </div>
-
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                    <h3 class="panel-title">Server Environment</h3>
-                  </div>
-
-                  <ul class="list-group">
-                    <li class="list-group-item">PHP Version: {{ $serverEnv['version'] }}</li>
-                    <li class="list-group-item">Server Software: {{ $serverEnv['server_software'] }}</li>
-                    <li class="list-group-item">Server OS: {{ $serverEnv['server_os'] }}</li>
-                    <li class="list-group-item">Database: {{ $serverEnv['database_connection_name'] }}</li>
-                    <li class="list-group-item">SSL Installed: {!! $serverEnv['ssl_installed'] ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>' !!}</li>
-                    <li class="list-group-item">Cache Driver: {{ $serverEnv['cache_driver'] }}</li>
-                    <li class="list-group-item">Session Driver: {{ $serverEnv['session_driver'] }}</li>
-                    <li class="list-group-item">Openssl Ext: {!! $serverEnv['openssl'] ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>' !!}</li>
-                    <li class="list-group-item">PDO Ext: {!! $serverEnv['pdo'] ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>' !!}</li>
-                    <li class="list-group-item">Mbstring Ext: {!! $serverEnv['mbstring'] ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>' !!}</li>
-                    <li class="list-group-item">Tokenizer Ext: {!! $serverEnv['tokenizer']  ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>'!!}</li>
-                    <li class="list-group-item">XML Ext: {!! $serverEnv['xml'] ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>' !!}</li>
-                    @foreach($serverExtras as $extraStatKey => $extraStatValue)
-                    <li class="list-group-item">{{ $extraStatKey }}: {!! is_bool($extraStatValue) ? ($extraStatValue ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>') : $extraStatValue !!}</li>
-                    @endforeach
-                  </ul>
-                </div>
-
-                @if(!empty($extraStats))
-                    <div class="panel panel-default">
-                      <div class="panel-heading">
-                        <h3 class="panel-title">Extra Stats</h3>
-                      </div>
-
-                      <ul class="list-group">
-                        @foreach($extraStats as $extraStatKey => $extraStatValue)
-                            <li class="list-group-item">{{ $extraStatKey }}: {!! is_bool($extraStatValue) ? ($extraStatValue ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>') : $extraStatValue !!}</li>
+    <!-- Server Environment column -->
+    <div class="w-full lg:w-1/3 space-y-6">
+        <!-- Laravel Environment -->
+        <div class="bg-white rounded-md border border-gray-200">
+            <div class="bg-gray-50 px-4 py-3 border-b border-gray-200 flex flex-wrap items-center gap-2">
+                <span class="text-gray-700"> {!! $svgIcons['laravelIcon'] !!}</span>
+                <h3 class="text-lg text-gray-700 font-normal">
+                    Laravel Environment
+                </h3>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-sm text-left divide-y divide-gray-200">
+                    <tbody class="divide-y divide-gray-100">
+                        <tr>
+                            <td class="px-4 py-2 font-normal w-75">Laravel Version</td>
+                            <td class="px-4 py-2 text-gray-500 text-right">{{ $laravelEnv['version'] }}</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 font-normal">Timezone</td>
+                            <td class="px-4 py-2 text-gray-500 text-right">{{ $laravelEnv['timezone'] }}</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 font-normal">Debug Mode</td>
+                            <td class="px-4 py-2 float-right">
+                                @if($laravelEnv['debug_mode'])
+                                <span class="text-green-600">
+                                    {!! $svgIcons['statusTrue'] !!}
+                                </span>
+                                @else
+                                <span class="text-red-600">
+                                    {!! $svgIcons['statusFalse'] !!}
+                                </span>
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 font-normal">Storage Dir Writable</td>
+                            <td class="px-4 py-2 float-right">
+                                @if($laravelEnv['storage_dir_writable'])
+                                <span class="text-green-600">
+                                    {!! $svgIcons['statusTrue'] !!}
+                                </span>
+                                @else
+                                <span class="text-red-600">
+                                    {!! $svgIcons['statusFalse'] !!}
+                                </span>
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 font-normal">Cache Dir Writable</td>
+                            <td class="px-4 py-2 float-right">
+                                @if($laravelEnv['cache_dir_writable'])
+                                <span class="text-green-600">
+                                    {!! $svgIcons['statusTrue'] !!}
+                                </span>
+                                @else
+                                <span class="text-red-600">
+                                    {!! $svgIcons['statusFalse'] !!}
+                                </span>
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 font-normal">Decomposer Version</td>
+                            <td class="px-4 py-2 text-gray-500 text-right">{{ $laravelEnv['decomposer_version'] }}</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 font-normal">App Size</td>
+                            <td class="px-4 py-2 text-gray-500 text-right">{{ $laravelEnv['app_size'] }}</td>
+                        </tr>
+                        @foreach($laravelExtras as $extraStatKey => $extraStatValue)
+                        <tr>
+                            <td class="px-4 py-2 font-normal">{{ $extraStatKey }}</td>
+                            <td class="px-4 py-2 text-gray-500 text-right float-right">
+                                @if(is_bool($extraStatValue))
+                                @if($extraStatValue)
+                                <span class="text-green-600">
+                                    {!! $svgIcons['statusTrue'] !!}
+                                </span>
+                                @else
+                                <span class="text-red-600">
+                                    {!! $svgIcons['statusFalse'] !!}
+                                </span>
+                                @endif
+                                @else
+                                {{ $extraStatValue }}
+                                @endif
+                            </td>
+                        </tr>
                         @endforeach
-                      </ul>
-                    </div>
-                @endif
-            </div> <!-- / Server Environment column -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-        </div> <!-- / Main Row -->
+        <!-- Server Environment -->
+        <div class="bg-white rounded-md border border-gray-200 mt-6">
+            <div class="bg-gray-50 px-4 py-3 border-b border-gray-200 flex flex-wrap items-center gap-2">
+                <span class="text-gray-700"> {!! $svgIcons['serverIcon'] !!} </span>
+                <h3 class="text-lg text-gray-700 font-normal">
+                    Server Environment
+                </h3>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-sm text-left divide-y divide-gray-200">
+                    <tbody class="divide-y divide-gray-100">
+                        <tr>
+                            <td class="px-4 py-2 font-normal w-1/3">PHP Version</td>
+                            <td class="px-4 py-2 text-gray-500 text-right">{{ $serverEnv['version'] }}</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 font-normal">Server Software</td>
+                            <td class="px-4 py-2 text-gray-500 text-right">{{ $serverEnv['server_software'] }}</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 font-normal">Server OS</td>
+                            <td class="px-4 py-2 text-gray-500 text-right">{{ $serverEnv['server_os'] }}</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 font-normal">Database</td>
+                            <td class="px-4 py-2 text-gray-500 text-right">{{ $serverEnv['database_connection_name'] }}</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 font-normal">SSL Installed</td>
+                            <td class="px-4 py-2 float-right">
+                                @if($serverEnv['ssl_installed'])
+                                <span class="text-green-600">
+                                    {!! $svgIcons['statusTrue'] !!}
+                                </span>
+                                @else
+                                <span class="text-red-600">
+                                    {!! $svgIcons['statusFalse'] !!}
+                                </span>
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 font-normal">Cache Driver</td>
+                            <td class="px-4 py-2 text-gray-500 text-right">{{ $serverEnv['cache_driver'] }}</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 font-normal">Session Driver</td>
+                            <td class="px-4 py-2 text-gray-500 text-right">{{ $serverEnv['session_driver'] }}</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 font-normal">Openssl Ext</td>
+                            <td class="px-4 py-2 float-right">
+                                @if($serverEnv['openssl'])
+                                <span class="text-green-600">
+                                    {!! $svgIcons['statusTrue'] !!}
+                                </span>
+                                @else
+                                <span class="text-red-600">
+                                    {!! $svgIcons['statusFalse'] !!}
+                                </span>
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 font-normal">PDO Ext</td>
+                            <td class="px-4 py-2 float-right">
+                                @if($serverEnv['pdo'])
+                                <span class="text-green-600">
+                                    {!! $svgIcons['statusTrue'] !!}
+                                </span>
+                                @else
+                                <span class="text-red-600">
+                                    {!! $svgIcons['statusFalse'] !!}
+                                </span>
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 font-normal">Mbstring Ext</td>
+                            <td class="px-4 py-2 float-right">
+                                @if($serverEnv['mbstring'])
+                                <span class="text-green-600">
+                                    {!! $svgIcons['statusTrue'] !!}
+                                </span>
+                                @else
+                                <span class="text-red-600">
+                                    {!! $svgIcons['statusFalse'] !!}
+                                </span>
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 font-normal">Tokenizer Ext</td>
+                            <td class="px-4 py-2 float-right">
+                                @if($serverEnv['tokenizer'])
+                                <span class="text-green-600">
+                                    {!! $svgIcons['statusTrue'] !!}
+                                </span>
+                                @else
+                                <span class="text-red-600">
+                                    {!! $svgIcons['statusFalse'] !!}
+                                </span>
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 font-normal">XML Ext</td>
+                            <td class="px-4 py-2 float-right">
+                                @if($serverEnv['xml'])
+                                <span class="text-green-600">
+                                    {!! $svgIcons['statusTrue'] !!}
+                                </span>
+                                @else
+                                <span class="text-red-600">
+                                    {!! $svgIcons['statusFalse'] !!}
+                                </span>
+                                @endif
+                            </td>
+                        </tr>
+                        @foreach($serverExtras as $extraStatKey => $extraStatValue)
+                        <tr>
+                            <td class="px-4 py-2 font-normal">{{ $extraStatKey }}</td>
+                            <td class="px-4 py-2 text-gray-500 text-right float-right">
+                                @if(is_bool($extraStatValue))
+                                @if($extraStatValue)
+                                <span class="text-green-600">
+                                    {!! $svgIcons['statusTrue'] !!}
+                                </span>
+                                @else
+                                <span class="text-red-600">
+                                    {!! $svgIcons['statusFalse'] !!}
+                                </span>
+                                @endif
+                                @else
+                                {{ $extraStatValue }}
+                                @endif
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-        <!-- jQuery & Datables JS -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
-        <script src="https://bartaz.github.io/sandbox.js/jquery.highlight.js"></script>
-        <script src="https://cdn.datatables.net/plug-ins/1.10.13/features/searchHighlight/dataTables.searchHighlight.min.js"></script>
+        @if(!empty($extraStats))
+        <!-- Extra Stats -->
+        <div class="bg-white shadow-md rounded-md border border-gray-200 mt-6">
+            <div class="bg-gray-100 px-4 py-3 border-b border-gray-200">
+                <h3 class="text-lg font-semibold">Extra Stats</h3>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-sm text-left divide-y divide-gray-200">
+                    <tbody class="divide-y divide-gray-100">
+                        @foreach($extraStats as $extraStatKey => $extraStatValue)
+                        <tr>
+                            <td class="px-4 py-2 font-normal w-1/3">{{ $extraStatKey }}</td>
+                            <td class="px-4 py-2 text-gray-500 text-right float-right">
+                                @if(is_bool($extraStatValue))
+                                @if($extraStatValue)
+                                <span class="text-green-600">
+                                    {!! $svgIcons['statusTrue'] !!}
+                                </span>
+                                @else
+                                <span class="text-red-600">
+                                    {!! $svgIcons['statusFalse'] !!}
+                                </span>
+                                @endif
+                                @else
+                                {{ $extraStatValue }}
+                                @endif
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        @endif
+    </div> <!-- / Server Environment column -->
 
-        <!-- Initialize & config datatables -->
-        <script>
-            $(document).ready(function() {
-                $('#decomposer').DataTable({
-                    'order': [[ 0, 'desc' ]],
-                    searchHighlight: true
-                });
-
-                s = document.getElementById("txt-report").value;
-                s = s.replace(/(^\s*)|(\s*$)/gi,"");
-                s = s.replace(/[ ]{2,}/gi," ");
-                s = s.replace(/\n /,"\n");
-                document.getElementById("txt-report").value = s;
-
-                $('#btn-report').on('click', function() {
-                    $("#report-wrapper").slideToggle();
-                });
-
-                $("#copy-report").on('click', function() {
-                    $("#txt-report").select();
-                    document.execCommand("copy");
-                });
-            });
-
-        </script>
-
-    </body>
-</html>
+</div>
