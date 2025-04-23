@@ -3,13 +3,11 @@
 
 <head>
     @include('Decomposer::layouts.header')
-    @stack('styles')
 </head>
 
-<body>
+<body class="mx-8 my-4">
     @include('Decomposer::index')
     @include('Decomposer::layouts.footer')
-    @stack('scripts')
 </body>
 
 </html>

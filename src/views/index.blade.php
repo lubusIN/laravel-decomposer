@@ -1,6 +1,6 @@
 <div class="w-full">
     <div class="w-full">
-        <div class="border-l-4 border-red-500 bg-custom-red p-4 rounded-md shadow-sm" x-data="reportComponent()" x-init="init()">
+        <div class="border-l-4 border-red-500 bg-red-100 p-4 rounded-md shadow-sm" x-data="reportComponent()" x-init="init()">
             <p class="mb-4 font-normal">Please share this information for troubleshooting:</p>
             <div class="flex flex-wrap items-center gap-2 mb-4">
                 <button id="btn-report" @click="showReport = !showReport" class="bg-gray-700 text-white text-sm px-4 py-2 rounded cursor-pointer hover:bg-red-500">
@@ -14,7 +14,7 @@
 
             <div id="report-wrapper" x-show="showReport" x-transition.duration.400ms.ease-in-out>
                 <textarea name="txt-report" id="txt-report"
-                    class="w-full border rounded p-2 text-sm font-mono text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    class="w-full border rounded p-2 text-sm font-mono text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 my-8"
                     rows="10" spellcheck="false" x-ref="reportText"
                     @focus="$refs.reportText.select()">
                         ### Laravel Environment
@@ -79,7 +79,7 @@
     <div class="w-full lg:w-2/3">
         <div class="bg-white rounded-md overflow-hidden border border-gray-200">
             <div class="bg-gray-50 px-4 py-3 border-b border-gray-200 flex flex-wrap items-center gap-2">
-                <span class="text-gray-700"> {!! $svgIcons['composer'] !!} </span>
+                <span class="text-gray-500"> {!! $svgIcons['composer'] !!} </span>
                 <h3 class="text-lg text-gray-700 font-normal">Installed Packages</h3>
             </div>
             <div class="p-4 overflow-x-auto">
@@ -149,7 +149,7 @@
         <!-- Laravel Environment -->
         <div class="bg-white rounded-md border border-gray-200">
             <div class="bg-gray-50 px-4 py-3 border-b border-gray-200 flex flex-wrap items-center gap-2">
-                <span class="text-gray-700"> {!! $svgIcons['laravelIcon'] !!}</span>
+                <span class="text-gray-500"> {!! $svgIcons['laravelIcon'] !!}</span>
                 <h3 class="text-lg text-gray-700 font-normal">
                     Laravel Environment
                 </h3>
@@ -243,7 +243,7 @@
         <!-- Server Environment -->
         <div class="bg-white rounded-md border border-gray-200 mt-6">
             <div class="bg-gray-50 px-4 py-3 border-b border-gray-200 flex flex-wrap items-center gap-2">
-                <span class="text-gray-700"> {!! $svgIcons['serverIcon'] !!} </span>
+                <span class="text-gray-500"> {!! $svgIcons['serverIcon'] !!} </span>
                 <h3 class="text-lg text-gray-700 font-normal">
                     Server Environment
                 </h3>

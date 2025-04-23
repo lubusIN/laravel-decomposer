@@ -1,7 +1,7 @@
 {
   "name": "laravel-decomposer",
   "version": "1.0.0",
-  "description": "<p align=\"center\"><img src=\"https://cloud.githubusercontent.com/assets/11228182/23066989/3dd8f21c-f543-11e6-8f74-f64ccf814d51.png\"></p>",
+  "description": "A Laravel package to decompose your installed packages, their dependencies, your app & server environment",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

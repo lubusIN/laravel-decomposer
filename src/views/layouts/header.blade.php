@@ -7,8 +7,6 @@
 <!-- Tailwind CSS -->
 <link rel="stylesheet" href="{{ asset('lubusin/laravel-decomposer/dist/style.css') }}">
 
-@include('Decomposer::layouts.style')
-
 <div class="h-18 mb-2 flex justify-center">
     <img src="{{ asset('lubusin/laravel-decomposer/images/LaravelDecomposer.png') }}" class="h-full">
 </div>
