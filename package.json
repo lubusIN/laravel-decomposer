@@ -1,0 +1,22 @@
+{
+  "name": "laravel-decomposer",
+  "version": "1.0.0",
+  "description": "A Laravel package to decompose your installed packages, their dependencies, your app & server environment",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.4",
+    "alpinejs": "^3.14.9",
+    "autoprefixer": "^10.4.21",
+    "tailwindcss": "^4.1.4",
+    "vite": "^6.3.2"
+  },
+  "type": "module"
+}

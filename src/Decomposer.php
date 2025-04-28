@@ -267,7 +267,7 @@ class Decomposer
     private static function folderSize($dir)
     {
         $size = 0;
-        $excludedFolders = ['vendor', 'node_modules', 'storage', 'tests', '.git'];
+              $excludedFolders = ['vendor', 'node_modules', 'storage', 'tests', '.git'];
 
         try {
             $directoryIterator = new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS);
@@ -305,5 +305,21 @@ class Decomposer
             $bytes /= 1024;
         }
         return round($bytes, 2) . ' ' . $units[$i];
+    }
+
+    /**
+     * Return the svg code from the filename and also adds classes to the svg file.
+     * 
+     * @param $name
+     * @param $class
+     * 
+     * @return string
+     */
+    public static function svg($name, $class = '')
+    {
+        $path = __DIR__ . '/svg/' . $name . ".svg";
+        if (!file_exists($path)) return '';
+        $svg = file_get_contents($path);
+        return str_replace('<svg', "<svg class=\"{$class}\"", $svg);
     }
 }
