@@ -1,4 +1,4 @@
-<p align="center"><img src="https://raw.githubusercontent.com/lubusIN/laravel-decomposer/dev/.github/LaravelDecomposer.jpg"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/lubusIN/laravel-decomposer/dev/.github/LaravelDecomposer.png"></p>
 
 <p align="center">
 <a href="https://packagist.org/packages/lubusin/laravel-decomposer"><img src="https://poser.pugx.org/lubusin/laravel-decomposer/v/stable" alt="Latest Stable Version"></a>
