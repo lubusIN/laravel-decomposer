@@ -1,9 +1,9 @@
 <div class="w-full">
     <div class="w-full">
-        <div class="border-l-4 border-red-500 bg-red-100 p-4 rounded-md shadow-sm" x-data="reportComponent()" x-init="$nextTick(() => init())">
+        <div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded-md shadow-sm" x-data="reportComponent()" x-init="$nextTick(() => init())">
             <p class="mb-4 font-normal">Please share this information for troubleshooting:</p>
             <div class="flex flex-wrap items-center gap-2 mb-4">
-                <button id="btn-report" @click="showReport = !showReport" class="bg-gray-700 text-white text-sm px-4 py-2 rounded cursor-pointer hover:bg-red-500">
+                <button id="btn-report" @click="showReport = !showReport" class="bg-gray-700 text-white text-sm px-4 py-2 rounded cursor-pointer hover:bg-blue-500">
                     Get System Report
                 </button>
                 <a href="https://github.com/lubusIN/laravel-decomposer/blob/master/report.md" target="_blank" id="btn-about-report"

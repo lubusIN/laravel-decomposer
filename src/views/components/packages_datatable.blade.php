@@ -23,7 +23,7 @@
                             <tr>
                                 <td class="px-4 py-2 whitespace-nowrap align-top">
                                     <span x-text="row.name"></span> :
-                                    <span class="inline-block bg-red-100 text-black text-xs px-2 py-1 rounded-md" x-text="row.version"></span>
+                                    <span class="inline-block bg-blue-100 text-black text-xs px-2 py-1 rounded-md" x-text="row.version"></span>
                                 </td>
                                 <td class="px-4 py-2">
                                     <ul class="list-disc ml-4 h-36 overflow-y-auto pr-2">
