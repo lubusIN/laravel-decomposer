@@ -35,7 +35,7 @@ Laravel Decomposer decomposes and lists all the installed packages and their dep
 - Let us know if you want anything to be added in the decomposer. After all the user makes the packages worth :)
 - We have created the [issues](https://github.com/lubusIN/laravel-decomposer/issues) & [labels](https://github.com/lubusIN/laravel-decomposer/labels) with the appropriate titles , where you can contribute your ideas & suggestions or let us know if you are working on a PR for that. Always more than happy to hear & learn new things from the community.
 
-> **Kind Attention :**
+> [!NOTE]
 > You can have a look at the [Roadmap](https://github.com/lubusIN/laravel-decomposer#roadmap). If you have any suggestions for code improvements, new optional or core features or enhancements, create an issue so you,us or any open source believer can start working on it.
 
 ## Requirement
@@ -63,19 +63,19 @@ composer require lubusin/laravel-decomposer
 ];
 ```
 
+### 2. Publish the package assets
+
+```php
+php artisan vendor:publish --tag=DecomposerAssets --force
+```
+
 ### 3. Add a route in your `routes/web.php`
 
 ```php
 Route::get('decompose','\Lubusin\Decomposer\Controllers\DecomposerController@index');
 ```
 
-### 4. Publish the package assets
-
-```php
-php artisan vendor:publish --tag=DecomposerAssets --force
-```
-
-### 5. Visit the Decomposer UI
+### 4. Visit the Decomposer UI
 Go to http://yourapp/decompose or the route you configured above.
 
 ## Usage 
