@@ -1,22 +1,17 @@
-<p align="center"><img src="https://raw.githubusercontent.com/lubusIN/laravel-decomposer/dev/.github/LaravelDecomposer.png"></p>
-
+<p align="center"><img src="https://raw.githubusercontent.com/lubusIN/laravel-decomposer/dev/.github/laravel-decomposer-logo.svg"></p>
 <p align="center">
-<a href="https://packagist.org/packages/lubusin/laravel-decomposer"><img src="https://poser.pugx.org/lubusin/laravel-decomposer/v/stable" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/lubusin/laravel-decomposer"><img src="https://poser.pugx.org/lubusin/laravel-decomposer/downloads" alt="Total Downloads"></a>
-<a href="https://github.com/lubusin/laravel-decomposer/blob/master/LICENSE.txt"><img src="https://poser.pugx.org/lubusin/laravel-decomposer/license" alt="License"></a>
-<a href="https://github.com/lubusin/laravel-decomposer/blob/master/contributing.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs"></a>
+<a href="https://packagist.org/packages/lubusin/laravel-decomposer"><img src="https://img.shields.io/packagist/v/lubusIN/laravel-decomposer" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/lubusin/laravel-decomposer"><img src="https://img.shields.io/packagist/stars/lubusIN/laravel-decomposer" alt="Total Stars"></a>
+<a href="https://packagist.org/packages/lubusin/laravel-decomposer"><img src="https://img.shields.io/packagist/dt/lubusIN/laravel-decomposer" alt="Total Downloads"></a>
+<a href="https://github.com/lubusIN/laravel-decomposer"><img src="https://img.shields.io/github/stars/lubusIN/laravel-decomposer" alt="Total Github Stars"></a>
+<a href="https://github.com/lubusin/laravel-decomposer/blob/master/LICENSE.txt"><img src="https://img.shields.io/github/license/lubusIN/laravel-decomposer" alt="License"></a>
 </p>
 
-## Introduction
+![Laravel Decomposer](https://raw.githubusercontent.com/lubusIN/laravel-decomposer/dev/.github/laravel-decomposer.png)
+
+## Overview
 
 Laravel Decomposer decomposes and lists all the installed packages and their dependencies along with the Laravel & the Server environment details your app is running in. Decomposer also generates a [markdown report](https://github.com/lubusIN/laravel-decomposer/blob/master/report.md) from those details that can be used for troubleshooting purposes, also it allows you to generate the same report [as an array](https://github.com/lubusIN/laravel-decomposer/wiki/Get-Report-as-an-array) and also [as JSON](https://github.com/lubusIN/laravel-decomposer/wiki/Get-Report-as-JSON) anywhere in your code. Laravel Package & app devs you can also [add your own personal extra stats specific for your package or your app](https://github.com/lubusIN/laravel-decomposer/wiki/Add-your-extra-stats). All these just on the hit of a single route as shown below in the gif.
-
-**Screenshot**
-
-![Laravel Decomposer](https://cloud.githubusercontent.com/assets/11228182/23458894/0ffe7992-fea4-11e6-8441-e7550f6c3139.gif)
-
-> **Kind Attention :**
-> You can have a look at the [Roadmap](https://github.com/lubusIN/laravel-decomposer#roadmap). If you have any suggestions for code improvements, new optional or core features or enhancements, create an issue so you,us or any open source believer can start working on it.
 
 ## Features
 
@@ -41,15 +36,24 @@ Laravel Decomposer decomposes and lists all the installed packages and their dep
 - Let us know if you want anything to be added in the decomposer. After all the user makes the packages worth :)
 - We have created the [issues](https://github.com/lubusIN/laravel-decomposer/issues) & [labels](https://github.com/lubusIN/laravel-decomposer/labels) with the appropriate titles , where you can contribute your ideas & suggestions or let us know if you are working on a PR for that. Always more than happy to hear & learn new things from the community.
 
+> **Kind Attention :**
+> You can have a look at the [Roadmap](https://github.com/lubusIN/laravel-decomposer#roadmap). If you have any suggestions for code improvements, new optional or core features or enhancements, create an issue so you,us or any open source believer can start working on it.
+
+## Requirement
+- PHP >= 7.1.3
+
 ## Installation
 
-You can install this package via composer:
+### 1. Install the package:
 
 ```bash
 composer require lubusin/laravel-decomposer
 ```
+>Note for Laravel 5.5 and above:
+Laravel’s Package Auto-Discovery will automatically register the service provider.
+You do not need to manually add it to your config/app.php.
 
-Next, add the service provider:
+>If you are using Laravel 5.4 or below, you need to manually add the service provider:
 
 ```php
 // In config/app.php ( Thank you for considering this package! Have a great day :) )
@@ -62,21 +66,22 @@ Next, add the service provider:
 ];
 ```
 
-Add a route in your web routes file:
+### 3. Add a route in your `routes/web.php`:
 
 ```php
 Route::get('decompose','\Lubusin\Decomposer\Controllers\DecomposerController@index');
 ```
 
-Publish the package assets:
+### 4. Publish the package assets:
 
 ```php
 php artisan vendor:publish --tag=DecomposerAssets --force
 ```
 
-Go to http://yourapp/decompose or the route you configured above in the routes file.
+### 5. Visit the Decomposer UI
+Go to http://yourapp/decompose or the route you configured above.
 
-## Docs
+## Usage 
 
 The Docs can be found in the [Wiki](https://github.com/lubusIN/laravel-decomposer/wiki) but to save you one more click, here's the index
 
@@ -89,17 +94,53 @@ The Docs can be found in the [Wiki](https://github.com/lubusIN/laravel-decompose
 
 Thank you for considering contributing to the Laravel Decomposer. You can read the contribution guide lines [here](contributing.md)
 
-## Security
+If you discover a security vulnerability within Laravel, please send an e-mail at [info@lubus.in](mailto:info@lubus.in). All security vulnerabilities will be promptly addressed.
 
-If you discover any security related issues, please email to [harish@lubus.in](mailto:harish@lubus.in).
+## Development
+
+### 1. Clone the Repository
+Clone the repository to your local system:
+
+```bash
+git clone git@github.com:lubusIN/laravel-decomposer.git 
+```
+
+### 2. Go to package folder
+
+```bash
+cd laravel-decomposer
+```
+
+### 3. Create your development branch
+
+```bash
+git checkout -b your-branch
+```
+
+### 4. Link your development branch in your Laravel project
+In your Laravel project, require your local package using Composer’s path repository feature. Add the following to your Laravel project's composer.json:
+
+```json
+"repositories": [
+    {
+        "type": "path",
+        "url": "../path-to-your-cloned-laravel-decomposer"
+    }
+]
+```
+Then require it using:
+
+```bash
+composer require lubusin/laravel-decomposer:dev-your-branch
+```
+
+## Meet Your Artisans
+
+[LUBUS](http://lubus.in) is a web design agency based in Mumbai.
 
 ## Credits
 
 - [Harish Toshniwal](https://github.com/introwit)
-
-## About LUBUS
-
-[LUBUS](http://lubus.in) is a web design agency based in Mumbai.
 
 ## License
 
