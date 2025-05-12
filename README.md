@@ -1,13 +1,12 @@
-<p align="center"><img src="https://raw.githubusercontent.com/lubusIN/laravel-decomposer/dev/.github/laravel-decomposer-logo.svg"></p>
+<p align="center"><img src="/.github/laravel-decomposer-logo.svg"></p>
 <p align="center">
 <a href="https://packagist.org/packages/lubusin/laravel-decomposer"><img src="https://img.shields.io/packagist/v/lubusIN/laravel-decomposer" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/lubusin/laravel-decomposer"><img src="https://img.shields.io/packagist/stars/lubusIN/laravel-decomposer" alt="Total Stars"></a>
 <a href="https://packagist.org/packages/lubusin/laravel-decomposer"><img src="https://img.shields.io/packagist/dt/lubusIN/laravel-decomposer" alt="Total Downloads"></a>
-<a href="https://github.com/lubusIN/laravel-decomposer"><img src="https://img.shields.io/github/stars/lubusIN/laravel-decomposer" alt="Total Github Stars"></a>
 <a href="https://github.com/lubusin/laravel-decomposer/blob/master/LICENSE.txt"><img src="https://img.shields.io/github/license/lubusIN/laravel-decomposer" alt="License"></a>
 </p>
 
-![Laravel Decomposer](https://raw.githubusercontent.com/lubusIN/laravel-decomposer/dev/.github/laravel-decomposer.png)
+![Laravel Decomposer](/.github/laravel-decomposer.png)
 
 ## Overview
 
@@ -44,16 +43,14 @@ Laravel Decomposer decomposes and lists all the installed packages and their dep
 
 ## Installation
 
-### 1. Install the package:
+### 1. Install the package
 
 ```bash
 composer require lubusin/laravel-decomposer
 ```
->Note for Laravel 5.5 and above:
-Laravel’s Package Auto-Discovery will automatically register the service provider.
-You do not need to manually add it to your config/app.php.
 
->If you are using Laravel 5.4 or below, you need to manually add the service provider:
+> [!IMPORTANT]
+> If you are using Laravel 5.4 or below, you need to manually add it to your `config/app.php`
 
 ```php
 // In config/app.php ( Thank you for considering this package! Have a great day :) )
@@ -66,13 +63,13 @@ You do not need to manually add it to your config/app.php.
 ];
 ```
 
-### 3. Add a route in your `routes/web.php`:
+### 3. Add a route in your `routes/web.php`
 
 ```php
 Route::get('decompose','\Lubusin\Decomposer\Controllers\DecomposerController@index');
 ```
 
-### 4. Publish the package assets:
+### 4. Publish the package assets
 
 ```php
 php artisan vendor:publish --tag=DecomposerAssets --force
@@ -138,14 +135,14 @@ composer require lubusin/laravel-decomposer:dev-your-branch
 
 [LUBUS](http://lubus.in) is a web design agency based in Mumbai.
 
+<img src="https://user-images.githubusercontent.com/1039236/40877801-3fa8ccf6-66a4-11e8-8f42-19ed4e883ce9.png" />
+
 ## Credits
 
-- [Harish Toshniwal](https://github.com/introwit)
+<a href="https://github.com/lubusin/laravel-decomposer/graphs/contributors">
+  <img height="36px" src="https://contrib.rocks/image?repo=lubusin/laravel-decomposer" />
+</a>
 
 ## License
 
 Laravel Decomposer is open-sourced software licensed under the [MIT license](LICENSE.txt)
-
-## Changelog
-
-Please see the [Changelog](https://github.com/lubusIN/laravel-decomposer/blob/master/changelog.md) for the details
