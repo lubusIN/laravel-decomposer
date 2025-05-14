@@ -6,7 +6,7 @@
 <a href="https://github.com/lubusin/laravel-decomposer/blob/master/LICENSE.txt"><img src="https://img.shields.io/github/license/lubusIN/laravel-decomposer" alt="License"></a>
 </p>
 
-![Laravel Decomposer](/.github/laravel-decomposer.png)
+![Laravel Decomposer](/.github/laravel-decomposer.jpg)
 
 ## Overview
 
