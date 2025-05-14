@@ -14,7 +14,7 @@ class DecomposerController extends Controller
     {
         $composerArray = Decomposer::getComposerArray();
 
-        $packages = Decomposer::getPackagesAndDependencies($composerArray['require']);
+        $packages = Decomposer::getPackagesAndDependencies(array_reverse($composerArray['require']));
 
         $version = Decomposer::getDecomposerVersion($composerArray, $packages);
 
@@ -28,6 +28,24 @@ class DecomposerController extends Controller
 
         $extraStats = Decomposer::getExtraStats();
 
-        return view('Decomposer::index', compact('packages', 'laravelEnv', 'serverEnv', 'extraStats', 'serverExtras', 'laravelExtras'));
+        $svgIcons = [
+            "composer" => Decomposer::svg('composer', 'h-5'),
+            "statusTrue" => Decomposer::svg('status_true', 'h-5'),
+            "statusFalse" => Decomposer::svg('status_false', 'h-5'),
+            "laravelIcon" => Decomposer::svg('laravel_icon', 'h-5'),
+            "serverIcon" => Decomposer::svg('server', 'h-5')
+        ];
+
+        $formattedPackages = collect($packages)->map(function ($pkg) {
+            return [
+                'name' => $pkg['name'],
+                'version' => $pkg['version'],
+                'dependencies' => is_array($pkg['dependencies']) ? collect($pkg['dependencies'])->map(function ($v, $k) {
+                    return ['name' => $k, 'version' => $v];
+                })->values() : [['name' => 'N/A', 'version' => $pkg['dependencies']]]
+            ];
+        })->values();
+
+        return view('Decomposer::app', compact('packages', 'laravelEnv', 'serverEnv', 'extraStats', 'serverExtras', 'laravelExtras', 'formattedPackages', 'svgIcons'));
     }
 }

@@ -3,6 +3,8 @@
 namespace Lubusin\Decomposer;
 
 use App;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 
 class Decomposer
 {
@@ -265,9 +267,27 @@ class Decomposer
     private static function folderSize($dir)
     {
         $size = 0;
-        foreach (glob(rtrim($dir, '/').'/*', GLOB_NOSORT) as $each) {
-            $size += is_file($each) ? filesize($each) : self::folderSize($each);
+              $excludedFolders = ['vendor', 'node_modules', 'storage', 'tests', '.git'];
+
+        try {
+            $directoryIterator = new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS);
+            $iterator = new RecursiveIteratorIterator($directoryIterator);
+
+            foreach ($iterator as $file) {
+                // Skip symlinks and check if file
+                if (!$file->isFile() || $file->isLink()) continue;
+
+                foreach ($excludedFolders as $excluded) {
+                    if (strpos($file->getPathname(), DIRECTORY_SEPARATOR . $excluded . DIRECTORY_SEPARATOR) !== false) {
+                        continue 2;
+                    }
+                }
+
+                $size += $file->getSize();
+            }
+        } catch (\Throwable $e) {
         }
+
         return $size;
     }
 
@@ -280,23 +300,26 @@ class Decomposer
 
     private static function sizeFormat($bytes)
     {
-        $kb = 1024;
-        $mb = $kb * 1024;
-        $gb = $mb * 1024;
-        $tb = $gb * 1024;
-
-        if (($bytes >= 0) && ($bytes < $kb)) {
-            return $bytes . ' B';
-        } elseif (($bytes >= $kb) && ($bytes < $mb)) {
-            return ceil($bytes / $kb) . ' KB';
-        } elseif (($bytes >= $mb) && ($bytes < $gb)) {
-            return ceil($bytes / $mb) . ' MB';
-        } elseif (($bytes >= $gb) && ($bytes < $tb)) {
-            return ceil($bytes / $gb) . ' GB';
-        } elseif ($bytes >= $tb) {
-            return ceil($bytes / $tb) . ' TB';
-        } else {
-            return $bytes . ' B';
+        $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+        for ($i = 0; $bytes >= 1024 && $i < count($units) - 1; $i++) {
+            $bytes /= 1024;
         }
+        return round($bytes, 2) . ' ' . $units[$i];
+    }
+
+    /**
+     * Return the svg code from the filename and also adds classes to the svg file.
+     * 
+     * @param $name
+     * @param $class
+     * 
+     * @return string
+     */
+    public static function svg($name, $class = '')
+    {
+        $path = __DIR__ . '/svg/' . $name . ".svg";
+        if (!file_exists($path)) return '';
+        $svg = file_get_contents($path);
+        return str_replace('<svg', "<svg class=\"{$class}\"", $svg);
     }
 }
