@@ -1,0 +1,44 @@
+# @format
+name: Bug report
+description: Create a report to help us improve
+title: "(bug-scope): [Short Summary of Bug]"
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!.
+  - type: textarea
+    attributes:
+      label: Description
+      description: |
+        Please write a brief description of the bug, including what you expect to happen and what is currently happening.
+      placeholder: |
+        I expected …
+        But instead …
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Steps to Reproduce
+      description: |
+        Please list the steps to reproduce the behavior.
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Scroll down to '...'
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Expected Behaviour
+      placeholder: A clear and concise description of what you expected to happen.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Screenshots / Screen Recording / Logs / Code Snippets
+      placeholder: If applicable, add screenshots, screen recording, logs, or code snippets to help explain the problem.
+    validations:
+      required: false
