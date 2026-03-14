@@ -2,10 +2,18 @@
     "name": "lubusin/laravel-decomposer",
     "description": "A Laravel package to decompose your installed packages, their dependencies, your app & server environment",
     "license": "MIT",
+    "type": "laravel-package",
     "authors": [
         {
-            "name": "Harish Toshniwal",
-            "email": "harish@lubus.in"
+            "name": "Ajit Bohra",
+            "email": "ajit@lubus.in"
+        },
+        {
+            "name": "Punit Verma",
+            "email": "punit@lubus.in"
+        },
+        {
+            "name": "Harish Toshniwal"
         }
     ],
     "autoload": {
