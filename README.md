@@ -63,19 +63,27 @@ composer require lubusin/laravel-decomposer
 ];
 ```
 
-### 2. Publish the package assets
+### 2. Publish the package config (optional)
+
+```bash
+php artisan vendor:publish --tag=DecomposerConfig
+```
+
+After publishing, update `config/decomposer.php` and set `exclude_folders` to control which folders are ignored while calculating `app_size`.
+
+### 3. Publish the package assets
 
 ```php
 php artisan vendor:publish --tag=DecomposerAssets --force
 ```
 
-### 3. Add a route in your `routes/web.php`
+### 4. Add a route in your `routes/web.php`
 
 ```php
 Route::get('decompose','\Lubusin\Decomposer\Controllers\DecomposerController@index');
 ```
 
-### 4. Visit the Decomposer UI
+### 5. Visit the Decomposer UI
 Go to http://yourapp/decompose or the route you configured above.
 
 ## Usage 
