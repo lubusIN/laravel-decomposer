@@ -139,12 +139,6 @@ composer require lubusin/laravel-decomposer:dev-your-branch
 <img src="https://raw.githubusercontent.com/lubusIN/.github/refs/heads/main/profile/banner.png" />
 </a>
 
-## Credits
-
-<a href="https://github.com/lubusin/laravel-decomposer/graphs/contributors">
-  <img height="36px" src="https://contrib.rocks/image?repo=lubusin/laravel-decomposer" />
-</a>
-
 ## License
 
 Laravel Decomposer is open-sourced software licensed under the [MIT license](LICENSE.txt)
