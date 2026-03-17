@@ -40,6 +40,7 @@ class DecomposerController extends Controller
             return [
                 'name' => $pkg['name'],
                 'version' => $pkg['version'],
+                'installed' => $pkg['version-installed'],
                 'dependencies' => is_array($pkg['dependencies']) ? collect($pkg['dependencies'])->map(function ($v, $k) {
                     return ['name' => $k, 'version' => $v];
                 })->values() : [['name' => 'N/A', 'version' => $pkg['dependencies']]]

@@ -2,7 +2,7 @@
 composer.lock
 /.idea
 src/.php_cs.cache
-src/controllers/.php_cs.cache
+src/Controllers/.php_cs.cache
 /node_modules
 package-lock.json
 .DS_Store
