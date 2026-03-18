@@ -41,26 +41,16 @@ Laravel Decomposer decomposes and lists all the installed packages and their dep
 ## Requirement
 - PHP >= 7.1.3
 
+## Compatibility
+
+- Laravel 6.x through 13.x
+
 ## Installation
 
 ### 1. Install the package
 
 ```bash
 composer require lubusin/laravel-decomposer
-```
-
-> [!IMPORTANT]
-> If you are using Laravel 5.4 or below, you need to manually add it to your `config/app.php`
-
-```php
-// In config/app.php ( Thank you for considering this package! Have a great day :) )
-
-'providers' => [
-    /*
-     * Package service providers
-     */
-    Lubusin\Decomposer\DecomposerServiceProvider::class,
-];
 ```
 
 ### 2. Publish the package config (optional)
@@ -80,7 +70,9 @@ php artisan vendor:publish --tag=DecomposerAssets --force
 ### 4. Add a route in your `routes/web.php`
 
 ```php
-Route::get('decompose','\Lubusin\Decomposer\Controllers\DecomposerController@index');
+use Lubusin\Decomposer\Controllers\DecomposerController;
+
+Route::get('decompose', [DecomposerController::class, 'index']);
 ```
 
 ### 5. Visit the Decomposer UI
