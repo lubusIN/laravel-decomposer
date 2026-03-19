@@ -41,6 +41,10 @@ Laravel Decomposer decomposes and lists all the installed packages and their dep
 ## Requirement
 - PHP >= 7.1.3
 
+## Compatibility
+
+- Laravel 6.x through 13.x
+
 ## Installation
 
 ### 1. Install the package
@@ -49,33 +53,29 @@ Laravel Decomposer decomposes and lists all the installed packages and their dep
 composer require lubusin/laravel-decomposer
 ```
 
-> [!IMPORTANT]
-> If you are using Laravel 5.4 or below, you need to manually add it to your `config/app.php`
+### 2. Publish the package config (optional)
 
-```php
-// In config/app.php ( Thank you for considering this package! Have a great day :) )
-
-'providers' => [
-    /*
-     * Package service providers
-     */
-    Lubusin\Decomposer\DecomposerServiceProvider::class,
-];
+```bash
+php artisan vendor:publish --tag=DecomposerConfig
 ```
 
-### 2. Publish the package assets
+After publishing, update `config/decomposer.php` and set `exclude_folders` to control which folders are ignored while calculating `app_size`.
+
+### 3. Publish the package assets
 
 ```php
 php artisan vendor:publish --tag=DecomposerAssets --force
 ```
 
-### 3. Add a route in your `routes/web.php`
+### 4. Add a route in your `routes/web.php`
 
 ```php
-Route::get('decompose','\Lubusin\Decomposer\Controllers\DecomposerController@index');
+use Lubusin\Decomposer\Controllers\DecomposerController;
+
+Route::get('decompose', [DecomposerController::class, 'index']);
 ```
 
-### 4. Visit the Decomposer UI
+### 5. Visit the Decomposer UI
 Go to http://yourapp/decompose or the route you configured above.
 
 ## Usage 
@@ -137,12 +137,6 @@ composer require lubusin/laravel-decomposer:dev-your-branch
 
 <a href="https://cal.com/lubus">
 <img src="https://raw.githubusercontent.com/lubusIN/.github/refs/heads/main/profile/banner.png" />
-</a>
-
-## Credits
-
-<a href="https://github.com/lubusin/laravel-decomposer/graphs/contributors">
-  <img height="36px" src="https://contrib.rocks/image?repo=lubusin/laravel-decomposer" />
 </a>
 
 ## License

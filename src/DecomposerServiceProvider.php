@@ -13,6 +13,11 @@ class DecomposerServiceProvider extends ServiceProvider
   public function boot()
   {
     $this->loadViewsFrom(__DIR__ . '/views', 'Decomposer');
+
+    $this->publishes([
+      __DIR__ . '/config/decomposer.php' => config_path('decomposer.php'),
+    ], 'DecomposerConfig');
+
     $this->publishes([
       __DIR__ . '/public' => public_path('lubusin/laravel-decomposer'),
     ], 'DecomposerAssets');
@@ -20,6 +25,6 @@ class DecomposerServiceProvider extends ServiceProvider
 
   public function register()
   {
-    // Don't register anything for now
+    $this->mergeConfigFrom(__DIR__ . '/config/decomposer.php', 'decomposer');
   }
 }

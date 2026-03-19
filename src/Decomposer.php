@@ -135,6 +135,16 @@ class Decomposer
 
     public static function getPackagesAndDependencies($packagesArray)
     {
+        $packageLockDetails = [];  
+        if (file_exists(base_path('composer.lock'))) {
+            $lockFile = json_decode(file_get_contents(base_path('composer.lock')));
+
+            $packageLockDetails = [];
+            foreach ($lockFile->packages as $package) {
+                $packageLockDetails[$package->name] = $package;
+            }
+        }
+
         foreach ($packagesArray as $key => $value) {
             $packageFile = base_path("/vendor/{$key}/composer.json");
 
@@ -148,7 +158,8 @@ class Decomposer
                     'name' => $key,
                     'version' => $value,
                     'dependencies' => $dependencies,
-                    'dev-dependencies' => $devDependencies
+                    'dev-dependencies' => $devDependencies,
+                    'version-installed' => isset($packageLockDetails[$key]) ? $packageLockDetails[$key]->version : ""
                 ];
             }
         }
@@ -267,7 +278,13 @@ class Decomposer
     private static function folderSize($dir)
     {
         $size = 0;
-              $excludedFolders = ['vendor', 'node_modules', 'storage', 'tests', '.git'];
+        $excludedFolders = config('decomposer.exclude_folders', [
+            'vendor',
+            'node_modules',
+            'storage',
+            'tests',
+            '.git',
+        ]);
 
         try {
             $directoryIterator = new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS);
@@ -309,10 +326,10 @@ class Decomposer
 
     /**
      * Return the svg code from the filename and also adds classes to the svg file.
-     * 
+     *
      * @param $name
      * @param $class
-     * 
+     *
      * @return string
      */
     public static function svg($name, $class = '')
