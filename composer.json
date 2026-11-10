@@ -35,7 +35,8 @@
         "illuminate/http": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0|^12.0|^13.0",
         "orchestra/testbench": "^8.0|^9.0|^10.0|^11.0",
         "pestphp/pest": "^2.0|^3.0|^4.0",
-        "pestphp/pest-plugin-laravel": "^2.0|^3.0|^4.0"
+        "pestphp/pest-plugin-laravel": "^2.0|^3.0|^4.0",
+        "laravel/pint": "^1.18"
     },
     "config": {
         "allow-plugins": {
@@ -43,7 +44,9 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/pest"
+        "test": "vendor/bin/pest",
+        "lint": "vendor/bin/pint --test",
+        "format": "vendor/bin/pint"
     },
     "extra": {
         "laravel": {

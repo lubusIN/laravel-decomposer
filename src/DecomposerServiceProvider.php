@@ -11,19 +11,19 @@ class DecomposerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadViewsFrom(__DIR__ . '/views', 'Decomposer');
+        $this->loadViewsFrom(__DIR__.'/views', 'Decomposer');
 
         $this->publishes([
-            __DIR__ . '/config/decomposer.php' => config_path('decomposer.php'),
+            __DIR__.'/config/decomposer.php' => config_path('decomposer.php'),
         ], 'DecomposerConfig');
 
         $this->publishes([
-            __DIR__ . '/public' => public_path('lubusin/laravel-decomposer'),
+            __DIR__.'/public' => public_path('lubusin/laravel-decomposer'),
         ], 'DecomposerAssets');
     }
 
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/config/decomposer.php', 'decomposer');
+        $this->mergeConfigFrom(__DIR__.'/config/decomposer.php', 'decomposer');
     }
 }

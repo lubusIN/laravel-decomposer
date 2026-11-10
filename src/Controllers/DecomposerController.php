@@ -3,12 +3,13 @@
 namespace Lubusin\Decomposer\Controllers;
 
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
 use Lubusin\Decomposer\Decomposer;
 
 class DecomposerController extends Controller
 {
     /**
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function index()
     {

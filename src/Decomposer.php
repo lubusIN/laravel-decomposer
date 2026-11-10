@@ -19,11 +19,14 @@ class Decomposer
      * by app or other package devs
      */
     public static $laravelExtras = [];
+
     public static $serverExtras = [];
+
     public static $extraStats = [];
 
     /**
      * Get the Decomposer system report as a PHP array
+     *
      * @return array
      */
     public static function getReportArray()
@@ -40,7 +43,7 @@ class Decomposer
         ];
 
         $extraStats = self::getExtraStats();
-        if (!empty($extraStats)) {
+        if (! empty($extraStats)) {
             $reportArray['Extra Stats'] = $extraStats;
         }
 
@@ -49,7 +52,6 @@ class Decomposer
 
     /**
      * Add Extra stats by app or any other package dev
-     * @param $extraStatsArray
      */
     public static function addExtraStats(array $extraStatsArray)
     {
@@ -58,7 +60,6 @@ class Decomposer
 
     /**
      * Add Laravel specific stats by app or any other package dev
-     * @param $laravelStatsArray
      */
     public static function addLaravelStats(array $laravelStatsArray)
     {
@@ -67,7 +68,6 @@ class Decomposer
 
     /**
      * Add Server specific stats by app or any other package dev
-     * @param $serverStatsArray
      */
     public static function addServerStats(array $serverStatsArray)
     {
@@ -76,6 +76,7 @@ class Decomposer
 
     /**
      * Get the extra stats added by the app or any other package dev
+     *
      * @return array
      */
     public static function getExtraStats()
@@ -85,6 +86,7 @@ class Decomposer
 
     /**
      * Get additional server info added by the app or any other package dev
+     *
      * @return array
      */
     public static function getServerExtras()
@@ -94,6 +96,7 @@ class Decomposer
 
     /**
      * Get additional laravel info added by the app or any other package dev
+     *
      * @return array
      */
     public static function getLaravelExtras()
@@ -103,6 +106,7 @@ class Decomposer
 
     /**
      * Get the Decomposer system report as JSON
+     *
      * @return string
      */
     public static function getReportJson()
@@ -112,28 +116,29 @@ class Decomposer
 
     /**
      * Get the Composer file contents as an array
+     *
      * @return array
      */
     public static function getComposerArray()
     {
         $path = base_path('composer.json');
-        if (!file_exists($path)) {
+        if (! file_exists($path)) {
             return [];
         }
 
         $json = @file_get_contents($path);
-        if (!is_string($json)) {
+        if (! is_string($json)) {
             return [];
         }
 
         $decoded = json_decode($json, true);
+
         return is_array($decoded) ? $decoded : [];
     }
 
     /**
      * Get Installed packages & their Dependencies
      *
-     * @param $packagesArray
      * @return array
      */
     public static function getPackagesAndDependencies($packagesArray)
@@ -146,13 +151,13 @@ class Decomposer
             $lockFile = is_string($lockContent) ? json_decode($lockContent) : null;
 
             if ($lockFile && is_object($lockFile)) {
-                if (!empty($lockFile->packages) && is_iterable($lockFile->packages)) {
+                if (! empty($lockFile->packages) && is_iterable($lockFile->packages)) {
                     foreach ($lockFile->packages as $package) {
                         $packageLockDetails[$package->name] = $package;
                     }
                 }
 
-                if (!empty($lockFile->{'packages-dev'}) && is_iterable($lockFile->{'packages-dev'})) {
+                if (! empty($lockFile->{'packages-dev'}) && is_iterable($lockFile->{'packages-dev'})) {
                     foreach ($lockFile->{'packages-dev'} as $package) {
                         $packageLockDetails[$package->name] = $package;
                     }
@@ -161,7 +166,7 @@ class Decomposer
         }
 
         $packages = [];
-        if (!is_iterable($packagesArray)) {
+        if (! is_iterable($packagesArray)) {
             return $packages;
         }
 
@@ -196,7 +201,6 @@ class Decomposer
     /**
      * Get Laravel environment details
      *
-     * @param $decomposerVersion
      * @return array
      */
     public static function getLaravelEnv($decomposerVersion)
@@ -214,6 +218,7 @@ class Decomposer
 
     /**
      * Get PHP/Server environment details
+     *
      * @return array
      */
     public static function getServerEnv()
@@ -237,7 +242,6 @@ class Decomposer
     /**
      * Get Installed packages & their version numbers as an associative array
      *
-     * @param $composerRequireArray
      * @return array
      */
     private static function getPackagesArray($composerRequireArray)
@@ -259,8 +263,6 @@ class Decomposer
     /**
      * Get current installed Decomposer version
      *
-     * @param $composerArray
-     * @param $packages
      * @return string
      */
     public static function getDecomposerVersion($composerArray, $packages)
@@ -290,23 +292,23 @@ class Decomposer
 
     /**
      * Check if SSL is installed or not
-     * @return boolean
+     *
+     * @return bool
      */
     private static function checkSslIsInstalled()
     {
-        return (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
-            || (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https');
+        return (! empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+            || (! empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https');
     }
 
     /**
      * Get the laravel app's size
      *
-     * @param $dir
      * @return int
      */
     private static function folderSize($dir)
     {
-        if (!is_dir($dir)) {
+        if (! is_dir($dir)) {
             return 0;
         }
 
@@ -325,12 +327,12 @@ class Decomposer
 
             foreach ($iterator as $file) {
                 // Skip symlinks and check if file
-                if (!$file->isFile() || $file->isLink()) {
+                if (! $file->isFile() || $file->isLink()) {
                     continue;
                 }
 
                 foreach ($excludedFolders as $excluded) {
-                    if (strpos($file->getPathname(), DIRECTORY_SEPARATOR . $excluded . DIRECTORY_SEPARATOR) !== false) {
+                    if (strpos($file->getPathname(), DIRECTORY_SEPARATOR.$excluded.DIRECTORY_SEPARATOR) !== false) {
                         continue 2;
                     }
                 }
@@ -346,7 +348,6 @@ class Decomposer
     /**
      * Format the app's size in correct units
      *
-     * @param $bytes
      * @return string
      */
     private static function sizeFormat($bytes)
@@ -355,20 +356,19 @@ class Decomposer
         for ($i = 0; $bytes >= 1024 && $i < count($units) - 1; $i++) {
             $bytes /= 1024;
         }
-        return round($bytes, 2) . ' ' . $units[$i];
+
+        return round($bytes, 2).' '.$units[$i];
     }
 
     /**
      * Return the svg code from the filename and also adds classes to the svg file.
      *
-     * @param $name
-     * @param $class
      * @return string
      */
     public static function svg($name, $class = '')
     {
-        $path = __DIR__ . '/svg/' . $name . '.svg';
-        if (!file_exists($path)) {
+        $path = __DIR__.'/svg/'.$name.'.svg';
+        if (! file_exists($path)) {
             return '';
         }
 

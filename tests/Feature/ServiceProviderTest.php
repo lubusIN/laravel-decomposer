@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\ServiceProvider;
-use Lubusin\Decomposer\DecomposerServiceProvider;
 
 it('merges default decomposer configuration', function () {
     expect(config('decomposer.exclude_folders'))->toBeArray()
