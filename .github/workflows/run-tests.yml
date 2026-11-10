@@ -10,6 +10,13 @@ on:
       - dev
       - master
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   pint:
     name: Code Style (Pint)
@@ -24,13 +31,46 @@ jobs:
           php-version: 8.3
           coverage: none
 
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-pint-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-pint-
+
       - name: Install dependencies
-        run: composer update --prefer-dist --no-interaction --no-progress
+        run: composer update --prefer-dist --no-interaction --no-progress --prefer-stable
 
       - name: Run Pint
         run: vendor/bin/pint --test
 
+  frontend:
+    name: Frontend Assets (Vite)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build assets
+        run: npm run build
+
+      - name: Verify compiled assets are committed
+        run: git diff --exit-code src/public/dist
+
   test:
+    name: P${{ matrix.php }} - L${{ matrix.laravel }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
@@ -48,8 +88,6 @@ jobs:
           - php: 8.2
             laravel: '13.*'
 
-    name: P${{ matrix.php }} - L${{ matrix.laravel }}
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -61,10 +99,21 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip, pdo, sqlite3
           coverage: none
 
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ matrix.php }}-${{ matrix.laravel }}-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-${{ matrix.php }}-${{ matrix.laravel }}-
+
       - name: Install dependencies
         run: |
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
-          composer update --prefer-dist --no-interaction --no-progress
+          composer update --prefer-dist --no-interaction --no-progress --prefer-stable
 
       - name: Execute tests
         run: vendor/bin/pest
