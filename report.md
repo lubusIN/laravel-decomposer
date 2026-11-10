@@ -14,8 +14,8 @@
 - Laravel Version                 
 - Timezone                  
 - Is the Debug Mode on or off      
-- Is the Storage Dir Writablewritable  
-- Cache Dir Writableitable            
+- Is the Storage Dir Writable
+- Is the Cache Dir Writable            
 - Decomposer Version
 - Size of your Laravel app
 - PHP Version installed on your server

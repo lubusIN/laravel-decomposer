@@ -12,14 +12,12 @@ class Decomposer
      * Make Decomposer name as a constant to be used
      * in resolving its version number
      */
-
     const PACKAGE_NAME = 'lubusin/laravel-decomposer';
 
     /**
      * Initialise blank arrays for extra stats to be added
      * by app or other package devs
      */
-
     public static $laravelExtras = [];
     public static $serverExtras = [];
     public static $extraStats = [];
@@ -28,7 +26,6 @@ class Decomposer
      * Get the Decomposer system report as a PHP array
      * @return array
      */
-
     public static function getReportArray()
     {
         $composerArray = self::getComposerArray();
@@ -36,11 +33,16 @@ class Decomposer
         $packages = self::getPackagesAndDependencies($requireArray);
         $version = self::getDecomposerVersion($composerArray, $packages);
 
-        $reportArray['Server Environment'] = self::getServerEnv();
-        $reportArray['Laravel Environment'] = self::getLaravelEnv($version);
-        $reportArray['Installed Packages'] = self::getPackagesArray($requireArray);
+        $reportArray = [
+            'Server Environment' => self::getServerEnv(),
+            'Laravel Environment' => self::getLaravelEnv($version),
+            'Installed Packages' => self::getPackagesArray($requireArray),
+        ];
 
-        empty(self::getExtraStats()) ? '' : $reportArray['Extra Stats'] = self::getExtraStats();
+        $extraStats = self::getExtraStats();
+        if (!empty($extraStats)) {
+            $reportArray['Extra Stats'] = $extraStats;
+        }
 
         return $reportArray;
     }
@@ -49,7 +51,6 @@ class Decomposer
      * Add Extra stats by app or any other package dev
      * @param $extraStatsArray
      */
-
     public static function addExtraStats(array $extraStatsArray)
     {
         self::$extraStats = array_merge(self::$extraStats, $extraStatsArray);
@@ -57,20 +58,17 @@ class Decomposer
 
     /**
      * Add Laravel specific stats by app or any other package dev
-     * @param $serverStatsArray
+     * @param $laravelStatsArray
      */
-
     public static function addLaravelStats(array $laravelStatsArray)
     {
         self::$laravelExtras = array_merge(self::$laravelExtras, $laravelStatsArray);
     }
 
-
     /**
      * Add Server specific stats by app or any other package dev
      * @param $serverStatsArray
      */
-
     public static function addServerStats(array $serverStatsArray)
     {
         self::$serverExtras = array_merge(self::$serverExtras, $serverStatsArray);
@@ -80,7 +78,6 @@ class Decomposer
      * Get the extra stats added by the app or any other package dev
      * @return array
      */
-
     public static function getExtraStats()
     {
         return self::$extraStats;
@@ -90,7 +87,6 @@ class Decomposer
      * Get additional server info added by the app or any other package dev
      * @return array
      */
-
     public static function getServerExtras()
     {
         return self::$serverExtras;
@@ -100,7 +96,6 @@ class Decomposer
      * Get additional laravel info added by the app or any other package dev
      * @return array
      */
-
     public static function getLaravelExtras()
     {
         return self::$laravelExtras;
@@ -108,9 +103,8 @@ class Decomposer
 
     /**
      * Get the Decomposer system report as JSON
-     * @return json
+     * @return string
      */
-
     public static function getReportJson()
     {
         return json_encode(self::getReportArray());
@@ -120,11 +114,20 @@ class Decomposer
      * Get the Composer file contents as an array
      * @return array
      */
-
     public static function getComposerArray()
     {
-        $json = file_get_contents(base_path('composer.json'));
-        return json_decode($json, true);
+        $path = base_path('composer.json');
+        if (!file_exists($path)) {
+            return [];
+        }
+
+        $json = @file_get_contents($path);
+        if (!is_string($json)) {
+            return [];
+        }
+
+        $decoded = json_decode($json, true);
+        return is_array($decoded) ? $decoded : [];
     }
 
     /**
@@ -133,37 +136,56 @@ class Decomposer
      * @param $packagesArray
      * @return array
      */
-
     public static function getPackagesAndDependencies($packagesArray)
     {
-        $packageLockDetails = [];  
-        if (file_exists(base_path('composer.lock'))) {
-            $lockFile = json_decode(file_get_contents(base_path('composer.lock')));
+        $packageLockDetails = [];
+        $lockPath = base_path('composer.lock');
 
-            $packageLockDetails = [];
-            if (!empty($lockFile->packages)) {
-                foreach ($lockFile->packages as $package) {
-                    $packageLockDetails[$package->name] = $package;
+        if (file_exists($lockPath)) {
+            $lockContent = @file_get_contents($lockPath);
+            $lockFile = is_string($lockContent) ? json_decode($lockContent) : null;
+
+            if ($lockFile && is_object($lockFile)) {
+                if (!empty($lockFile->packages) && is_iterable($lockFile->packages)) {
+                    foreach ($lockFile->packages as $package) {
+                        $packageLockDetails[$package->name] = $package;
+                    }
+                }
+
+                if (!empty($lockFile->{'packages-dev'}) && is_iterable($lockFile->{'packages-dev'})) {
+                    foreach ($lockFile->{'packages-dev'} as $package) {
+                        $packageLockDetails[$package->name] = $package;
+                    }
                 }
             }
         }
 
         $packages = [];
+        if (!is_iterable($packagesArray)) {
+            return $packages;
+        }
+
         foreach ($packagesArray as $key => $value) {
             $packageFile = base_path("/vendor/{$key}/composer.json");
 
             if ($key !== 'php' && file_exists($packageFile)) {
-                $json2 = file_get_contents($packageFile);
-                $dependenciesArray = json_decode($json2, true);
-                $dependencies = array_key_exists('require', $dependenciesArray) ? $dependenciesArray['require'] : 'No dependencies';
-                $devDependencies = array_key_exists('require-dev', $dependenciesArray) ? $dependenciesArray['require-dev'] : 'No dependencies';
+                $json = @file_get_contents($packageFile);
+                $dependenciesArray = is_string($json) ? json_decode($json, true) : null;
+
+                $dependencies = is_array($dependenciesArray) && array_key_exists('require', $dependenciesArray)
+                    ? $dependenciesArray['require']
+                    : 'No dependencies';
+
+                $devDependencies = is_array($dependenciesArray) && array_key_exists('require-dev', $dependenciesArray)
+                    ? $dependenciesArray['require-dev']
+                    : 'No dependencies';
 
                 $packages[] = [
                     'name' => $key,
                     'version' => $value,
                     'dependencies' => $dependencies,
                     'dev-dependencies' => $devDependencies,
-                    'version-installed' => isset($packageLockDetails[$key]) ? $packageLockDetails[$key]->version : ""
+                    'version-installed' => isset($packageLockDetails[$key]->version) ? $packageLockDetails[$key]->version : '',
                 ];
             }
         }
@@ -177,7 +199,6 @@ class Decomposer
      * @param $decomposerVersion
      * @return array
      */
-
     public static function getLaravelEnv($decomposerVersion)
     {
         return array_merge([
@@ -187,7 +208,7 @@ class Decomposer
             'storage_dir_writable' => is_writable(base_path('storage')),
             'cache_dir_writable' => is_writable(base_path('bootstrap/cache')),
             'decomposer_version' => $decomposerVersion,
-            'app_size' => self::sizeFormat(self::folderSize(base_path()))
+            'app_size' => self::sizeFormat(self::folderSize(base_path())),
         ], self::getLaravelExtras());
     }
 
@@ -209,24 +230,27 @@ class Decomposer
             'pdo' => extension_loaded('pdo'),
             'mbstring' => extension_loaded('mbstring'),
             'tokenizer' => extension_loaded('tokenizer'),
-            'xml' => extension_loaded('xml')
+            'xml' => extension_loaded('xml'),
         ], self::getServerExtras());
     }
 
     /**
      * Get Installed packages & their version numbers as an associative array
      *
-     * @param $packagesArray
+     * @param $composerRequireArray
      * @return array
      */
-
     private static function getPackagesArray($composerRequireArray)
     {
         $packagesArray = self::getPackagesAndDependencies($composerRequireArray);
 
         $packages = [];
-        foreach ($packagesArray as $packageArray) {
-            $packages[$packageArray['name']] = $packageArray['version'];
+        if (is_iterable($packagesArray)) {
+            foreach ($packagesArray as $packageArray) {
+                if (isset($packageArray['name'], $packageArray['version'])) {
+                    $packages[$packageArray['name']] = $packageArray['version'];
+                }
+            }
         }
 
         return $packages;
@@ -239,7 +263,6 @@ class Decomposer
      * @param $packages
      * @return string
      */
-
     public static function getDecomposerVersion($composerArray, $packages)
     {
         if (isset($composerArray['require'][self::PACKAGE_NAME])) {
@@ -250,13 +273,15 @@ class Decomposer
             return $composerArray['require-dev'][self::PACKAGE_NAME];
         }
 
-        foreach ($packages as $package) {
-            if (isset($package['dependencies'][self::PACKAGE_NAME])) {
-                return $package['dependencies'][self::PACKAGE_NAME];
-            }
+        if (is_iterable($packages)) {
+            foreach ($packages as $package) {
+                if (isset($package['dependencies'][self::PACKAGE_NAME])) {
+                    return $package['dependencies'][self::PACKAGE_NAME];
+                }
 
-            if (isset($package['dev-dependencies'][self::PACKAGE_NAME])) {
-                return $package['dev-dependencies'][self::PACKAGE_NAME];
+                if (isset($package['dev-dependencies'][self::PACKAGE_NAME])) {
+                    return $package['dev-dependencies'][self::PACKAGE_NAME];
+                }
             }
         }
 
@@ -267,10 +292,10 @@ class Decomposer
      * Check if SSL is installed or not
      * @return boolean
      */
-
     private static function checkSslIsInstalled()
     {
-        return (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off');
+        return (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+            || (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https');
     }
 
     /**
@@ -279,11 +304,14 @@ class Decomposer
      * @param $dir
      * @return int
      */
-
     private static function folderSize($dir)
     {
+        if (!is_dir($dir)) {
+            return 0;
+        }
+
         $size = 0;
-        $excludedFolders = config('decomposer.exclude_folders', [
+        $excludedFolders = (array) config('decomposer.exclude_folders', [
             'vendor',
             'node_modules',
             'storage',
@@ -297,7 +325,9 @@ class Decomposer
 
             foreach ($iterator as $file) {
                 // Skip symlinks and check if file
-                if (!$file->isFile() || $file->isLink()) continue;
+                if (!$file->isFile() || $file->isLink()) {
+                    continue;
+                }
 
                 foreach ($excludedFolders as $excluded) {
                     if (strpos($file->getPathname(), DIRECTORY_SEPARATOR . $excluded . DIRECTORY_SEPARATOR) !== false) {
@@ -319,7 +349,6 @@ class Decomposer
      * @param $bytes
      * @return string
      */
-
     private static function sizeFormat($bytes)
     {
         $units = ['B', 'KB', 'MB', 'GB', 'TB'];
@@ -334,14 +363,19 @@ class Decomposer
      *
      * @param $name
      * @param $class
-     *
      * @return string
      */
     public static function svg($name, $class = '')
     {
-        $path = __DIR__ . '/svg/' . $name . ".svg";
-        if (!file_exists($path)) return '';
+        $path = __DIR__ . '/svg/' . $name . '.svg';
+        if (!file_exists($path)) {
+            return '';
+        }
+
         $svg = file_get_contents($path);
-        return str_replace('<svg', "<svg class=\"{$class}\"", $svg);
+
+        return $class !== ''
+            ? str_replace('<svg', "<svg class=\"{$class}\"", $svg)
+            : $svg;
     }
 }

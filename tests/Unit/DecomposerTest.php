@@ -17,6 +17,15 @@ it('renders existing svg icons with given css classes', function () {
         ->toContain('</svg>');
 });
 
+it('renders existing svg icons without class when omitted', function () {
+    $svg = Decomposer::svg('composer');
+
+    expect($svg)
+        ->toBeString()
+        ->toContain('<svg')
+        ->not->toContain('class=""');
+});
+
 it('returns empty string for non-existent svg', function () {
     $svg = Decomposer::svg('non_existent_icon');
 
@@ -105,4 +114,26 @@ it('generates report array and json', function () {
         'Laravel Environment',
         'Installed Packages',
     ]);
+});
+
+it('includes extra stats in report when provided', function () {
+    Decomposer::addExtraStats(['Cache Hit Rate' => '98%']);
+
+    $report = Decomposer::getReportArray();
+
+    expect($report)->toHaveKey('Extra Stats')
+        ->and($report['Extra Stats'])->toHaveKey('Cache Hit Rate', '98%');
+});
+
+it('safely handles empty packages and dependencies', function () {
+    $packages = Decomposer::getPackagesAndDependencies([]);
+    expect($packages)->toBeArray()->toBeEmpty();
+
+    $packagesWithPhp = Decomposer::getPackagesAndDependencies(['php' => '^8.3']);
+    expect($packagesWithPhp)->toBeArray()->toBeEmpty();
+});
+
+it('returns unknown when decomposer version cannot be detected', function () {
+    $version = Decomposer::getDecomposerVersion([], []);
+    expect($version)->toBe('unknown');
 });
