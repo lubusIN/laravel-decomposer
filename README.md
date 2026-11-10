@@ -1,12 +1,13 @@
-<p align="center"><img src="/.github/laravel-decomposer-logo.svg"></p>
-<p align="center">
+<p align="center"><img height="50" src=".github/assets/logo.svg"></p>
+
+![Laravel Decomposer](/.github/laravel-decomposer.jpg)
+
+<p>
 <a href="https://packagist.org/packages/lubusin/laravel-decomposer"><img src="https://img.shields.io/packagist/v/lubusIN/laravel-decomposer" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/lubusin/laravel-decomposer"><img src="https://img.shields.io/packagist/stars/lubusIN/laravel-decomposer" alt="Total Stars"></a>
 <a href="https://packagist.org/packages/lubusin/laravel-decomposer"><img src="https://img.shields.io/packagist/dt/lubusIN/laravel-decomposer" alt="Total Downloads"></a>
 <a href="https://github.com/lubusin/laravel-decomposer/blob/master/LICENSE.txt"><img src="https://img.shields.io/github/license/lubusIN/laravel-decomposer" alt="License"></a>
 </p>
-
-![Laravel Decomposer](/.github/laravel-decomposer.jpg)
 
 ## Overview
 
