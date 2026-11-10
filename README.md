@@ -1,82 +1,90 @@
-<p align="center"><img src="/.github/laravel-decomposer-logo.svg"></p>
 <p align="center">
-<a href="https://packagist.org/packages/lubusin/laravel-decomposer"><img src="https://img.shields.io/packagist/v/lubusIN/laravel-decomposer" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/lubusin/laravel-decomposer"><img src="https://img.shields.io/packagist/stars/lubusIN/laravel-decomposer" alt="Total Stars"></a>
-<a href="https://packagist.org/packages/lubusin/laravel-decomposer"><img src="https://img.shields.io/packagist/dt/lubusIN/laravel-decomposer" alt="Total Downloads"></a>
-<a href="https://github.com/lubusin/laravel-decomposer/blob/master/LICENSE.txt"><img src="https://img.shields.io/github/license/lubusIN/laravel-decomposer" alt="License"></a>
+  <img src=".github/assets/logo.svg" alt="Laravel Decomposer Logo" height="60">
 </p>
 
-![Laravel Decomposer](/.github/laravel-decomposer.jpg)
+![Laravel Decomposer Banner](.github/assets/banner.png)
 
-## Overview
+<p>
+  <a href="https://packagist.org/packages/lubusin/laravel-decomposer"><img src="https://img.shields.io/packagist/v/lubusIN/laravel-decomposer.svg?style=flat-square" alt="Latest Version on Packagist"></a>
+  <a href="https://github.com/lubusIN/laravel-decomposer/actions/workflows/run-tests.yml"><img src="https://img.shields.io/github/actions/workflow/status/lubusIN/laravel-decomposer/run-tests.yml?branch=master&label=tests&style=flat-square" alt="GitHub Tests Action Status"></a>
+  <a href="https://packagist.org/packages/lubusin/laravel-decomposer"><img src="https://img.shields.io/packagist/dt/lubusIN/laravel-decomposer.svg?style=flat-square" alt="Total Downloads"></a>
+  <a href="https://github.com/lubusIN/laravel-decomposer/blob/master/LICENSE.txt"><img src="https://img.shields.io/github/license/lubusIN/laravel-decomposer.svg?style=flat-square" alt="License"></a>
+</p>
 
-Laravel Decomposer decomposes and lists all the installed packages and their dependencies along with the Laravel & the Server environment details your app is running in. Decomposer also generates a [markdown report](https://github.com/lubusIN/laravel-decomposer/blob/master/report.md) from those details that can be used for troubleshooting purposes, also it allows you to generate the same report [as an array](https://github.com/lubusIN/laravel-decomposer/wiki/Get-Report-as-an-array) and also [as JSON](https://github.com/lubusIN/laravel-decomposer/wiki/Get-Report-as-JSON) anywhere in your code. Laravel Package & app devs you can also [add your own personal extra stats specific for your package or your app](https://github.com/lubusIN/laravel-decomposer/wiki/Add-your-extra-stats). All these just on the hit of a single route.
+## Laravel Decomposer
+
+**Laravel Decomposer** provides an instant, interactive breakdown of your Laravel application's installed packages, lock versions, and dependencies alongside deep server and framework environment details.
+
+It also generates a standardized Markdown system report ready to copy or download for troubleshooting and GitHub issues, and provides programmatic PHP APIs to access report data as an array or JSON anywhere in your code.
 
 ## Features
 
-- This can be used by your non-tech client/user of your laravel app or non-experienced dev who still dosen't uses CLI to generate the system report & send over to you so you can know the entire details of his environment.
-- To see the list of all installed packages & their dependencies in the laravel app directly from the browser
-- To get the Laravel & Server environment details on the same page with the packages list
-- To check whether all the pre configurations & extensions asked by Laravel are applied and loaded or not
-- Suppose suddenly or after some changes your app broke, you can install Laravel Decomposer, generate & copy the [report](https://github.com/lubusIN/laravel-decomposer/blob/master/report.md) and paste it in the issue box of the respective repo you are reporting the issue to.
-- For package/laravel app developers this can be very useful when collecting the information from the users reporting the issues. As the report gives them complete info about the environment the issue is being raised in.
-- It can also help you in other ways like suppose you have a package installed that is using illuminate/support v5.1, and an another package using illuminate/support v5.3, so getting these facts quickly by just hitting to a route can make you aware of possible unstability & conflicts so you can report that to the respective package developer.
-- It cuts down the troubleshooting time. For eg: Sometimes after trying all possible solutions at the end the user says 'I forgot to say I am on PHP 4'. Here Decomposer acts as the precaution & removes the dependency of querying the user for every single thing.
+- **Installed Packages & Dependencies**: View all direct dependencies, required constraints, installed lock versions, and expandable direct sub-dependencies directly in the browser.
+- **Environment Diagnostics**: Inspect Laravel version, timezone, debug mode, directory permissions (`storage`, `bootstrap/cache`), app size, server software, PHP version, and loaded core extensions (OpenSSL, PDO, Mbstring, Tokenizer, XML).
+- **One-Click Markdown Report**: Generate, copy, or download a structured system report formatted for GitHub issues, issue trackers, and customer support tickets.
+- **Programmatic API**: Retrieve the system report as a native PHP array or JSON payload anywhere in your application or CLI commands.
+- **Extensible Stats**: Register custom application, Laravel, or server metrics via `Decomposer::addExtraStats()`, `addLaravelStats()`, and `addServerStats()`.
+- **Modern Dashboard UI**: Built with Tailwind CSS and Alpine.js, featuring real-time package search, hotkey search (`/`), dependency filters, pagination, and built-in light & dark mode.
 
-## Roadmap
+## Requirements & Compatibility
 
-- ~Allow Decomposer report to be accessed via code~ _Released in [v1.1](https://github.com/lubusIN/laravel-decomposer#helpers)_
-- ~Allow users and other packages to add their own stats in the Decomposer report~ _Released in [v1.2](https://github.com/lubusIN/laravel-decomposer/wiki/Add-your-extra-stats)_
-- ~Migrate UI framework from Bootstrap 3 CDN and jQuery to Tailwind CSS and Alpine.js for a modern, lightweight frontend with tighter integration into the Laravel ecosystem.~
-- Add a config file to allow user to control what he/she wants to see in the view
-- Check for updates of the installed packages & show if any available for the respective packages or their dependencies
-- Compare same dependency versions for different packages & warn user about the possible conflict. (Can be achieved even now as the search results highlighting is enabled, but sure it can be done in more better way)
-- Make UI more informative & UX more better
-- Let us know if you want anything to be added in the decomposer. After all the user makes the packages worth :)
-- We have created the [issues](https://github.com/lubusIN/laravel-decomposer/issues) & [labels](https://github.com/lubusIN/laravel-decomposer/labels) with the appropriate titles , where you can contribute your ideas & suggestions or let us know if you are working on a PR for that. Always more than happy to hear & learn new things from the community.
-
-> [!NOTE]
-> You can have a look at the [Roadmap](https://github.com/lubusIN/laravel-decomposer#roadmap). If you have any suggestions for code improvements, new optional or core features or enhancements, create an issue so you,us or any open source believer can start working on it.
-
-## Requirement
-- PHP >= 7.1.3
-
-## Compatibility
-
-- Laravel 6.x through 13.x
+- **PHP**: `^8.2` (PHP 8.2, 8.3, 8.4)
+- **Laravel**: `11.x`, `12.x`, and `13.x`
 
 ## Installation
 
-### 1. Install the package
+### 1. Install via Composer
 
 ```bash
 composer require lubusin/laravel-decomposer
 ```
 
-### 2. Publish the package config (optional)
+### 2. Publish Dashboard Assets
+
+Publish the compiled stylesheet and JavaScript bundle to your application's `public` directory:
+
+```bash
+php artisan vendor:publish --tag=DecomposerAssets --force
+```
+
+### 3. Publish Configuration (Optional)
 
 ```bash
 php artisan vendor:publish --tag=DecomposerConfig
 ```
 
-After publishing, update `config/decomposer.php` and set `exclude_folders` to control which folders are ignored while calculating `app_size`.
-
-### 3. Publish the package assets
+This creates `config/decomposer.php`, where you can configure directories to exclude when calculating total application size:
 
 ```php
-php artisan vendor:publish --tag=DecomposerAssets --force
+return [
+    'exclude_folders' => [
+        'vendor',
+        'node_modules',
+        'storage',
+        'tests',
+        '.git',
+    ],
+];
 ```
 
-### 4. Add a route in your `routes/web.php`
+### 4. Register the Route
+
+Add the Decomposer route to your `routes/web.php`. We recommend protecting this route with authentication or authorization middleware in production environments:
 
 ```php
 use Lubusin\Decomposer\Controllers\DecomposerController;
 
+// Development / Local:
 Route::get('decompose', [DecomposerController::class, 'index']);
+
+// Recommended for Production:
+Route::get('decompose', [DecomposerController::class, 'index'])
+    ->middleware(['web', 'auth']);
 ```
 
-### 5. Visit the Decomposer UI
-Go to http://yourapp/decompose or the route you configured above.
+### 5. Access the Dashboard
+
+Open `https://your-app.test/decompose` (or your configured path) in your browser.
 
 ## Usage 
 
@@ -87,58 +95,51 @@ The Docs can be found in the [Wiki](https://github.com/lubusIN/laravel-decompose
 - [Get Decomposer report as an array](https://github.com/lubusIN/laravel-decomposer/wiki/Get-Report-as-an-array)
 - [Get Decomposer report as JSON](https://github.com/lubusIN/laravel-decomposer/wiki/Get-Report-as-JSON)
 
-## Contributing
 
-Thank you for considering contributing to the Laravel Decomposer. You can read the contribution guide lines [here](contributing.md)
+## Local Development & Contributing
 
-If you discover a security vulnerability within Laravel, please send an e-mail at [info@lubus.in](mailto:info@lubus.in). All security vulnerabilities will be promptly addressed.
+Thank you for considering contributing to Laravel Decomposer! Please review the [contribution guidelines](contributing.md).
 
-## Development
+### Setup for Local Package Development
 
-### 1. Clone the Repository
-Clone the repository to your local system:
+1. Clone the repository:
+   ```bash
+   git clone git@github.com:lubusIN/laravel-decomposer.git
+   cd laravel-decomposer
+   ```
 
-```bash
-git clone git@github.com:lubusIN/laravel-decomposer.git 
-```
+2. Install PHP and Node dependencies:
+   ```bash
+   composer install
+   npm install
+   ```
 
-### 2. Go to package folder
+3. Compile frontend assets:
+   ```bash
+   npm run build
+   # Or for active development:
+   npm run dev
+   ```
 
-```bash
-cd laravel-decomposer
-```
+4. Run tests and code style checks:
+   ```bash
+   composer test   # Runs Pest test suite
+   composer lint   # Checks formatting with Laravel Pint
+   composer format # Auto-fixes formatting with Laravel Pint
+   ```
 
-### 3. Create your development branch
+### Security
 
-```bash
-git checkout -b your-branch
-```
-
-### 4. Link your development branch in your Laravel project
-In your Laravel project, require your local package using Composer’s path repository feature. Add the following to your Laravel project's composer.json:
-
-```json
-"repositories": [
-    {
-        "type": "path",
-        "url": "../path-to-your-cloned-laravel-decomposer"
-    }
-]
-```
-Then require it using:
-
-```bash
-composer require lubusin/laravel-decomposer:dev-your-branch
-```
+If you discover a security vulnerability within Laravel Decomposer, please email [info@lubus.in](mailto:info@lubus.in). All security issues will be promptly addressed.
 
 ## Meet Your Artisans
 
-[LUBUS](https://lubus.in/?utm_source=github&utm_medium=open-source&utm_campaign=laravel-decomposer) is a web design agency based in Mumbai, India.
+**[LUBUS](https://lubus.in/?utm_source=github&utm_medium=open-source&utm_campaign=laravel-decomposer)** is a web design and development agency based in Mumbai, India.
 
 <a href="https://cal.com/lubus">
-<img src="https://raw.githubusercontent.com/lubusIN/.github/refs/heads/main/profile/banner.png" />
+  <img src="https://raw.githubusercontent.com/lubusIN/.github/refs/heads/main/profile/banner.png" alt="LUBUS Banner" />
 </a>
 
 ## License
 
-Laravel Decomposer is open-sourced software licensed under the [MIT license](LICENSE.txt)
+Laravel Decomposer is open-sourced software licensed under the [MIT license](LICENSE.txt).

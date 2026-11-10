@@ -6,3 +6,5 @@ src/Controllers/.php_cs.cache
 /node_modules
 package-lock.json
 .DS_Store
+.phpunit.result.cache
+.pest

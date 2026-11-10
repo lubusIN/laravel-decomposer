@@ -1,5 +1,5 @@
 import Alpine from 'alpinejs'
-import { dataTable } from './components/datatable'
+import { dataTable } from './components/dataTable'
 import { reportComponent } from './components/reportComponent'
 
 window.Alpine = Alpine

@@ -2,19 +2,21 @@
 
 namespace Lubusin\Decomposer\Controllers;
 
-use Lubusin\Decomposer\Decomposer;
 use Illuminate\Routing\Controller;
+use Illuminate\View\View;
+use Lubusin\Decomposer\Decomposer;
 
 class DecomposerController extends Controller
 {
     /**
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function index()
     {
         $composerArray = Decomposer::getComposerArray();
 
-        $packages = Decomposer::getPackagesAndDependencies(array_reverse($composerArray['require']));
+        $require = $composerArray['require'] ?? [];
+        $packages = Decomposer::getPackagesAndDependencies(is_array($require) ? array_reverse($require) : []);
 
         $version = Decomposer::getDecomposerVersion($composerArray, $packages);
 
@@ -29,24 +31,35 @@ class DecomposerController extends Controller
         $extraStats = Decomposer::getExtraStats();
 
         $svgIcons = [
-            "composer" => Decomposer::svg('composer', 'h-5'),
-            "statusTrue" => Decomposer::svg('status_true', 'h-5'),
-            "statusFalse" => Decomposer::svg('status_false', 'h-5'),
-            "laravelIcon" => Decomposer::svg('laravel_icon', 'h-5'),
-            "serverIcon" => Decomposer::svg('server', 'h-5')
+            'composer' => Decomposer::svg('composer', 'h-5'),
+            'statusTrue' => Decomposer::svg('status_true', 'h-5'),
+            'statusFalse' => Decomposer::svg('status_false', 'h-5'),
+            'laravelIcon' => Decomposer::svg('laravel_icon', 'h-5'),
+            'serverIcon' => Decomposer::svg('server', 'h-5'),
         ];
 
         $formattedPackages = collect($packages)->map(function ($pkg) {
+            $dependencies = is_array($pkg['dependencies'] ?? null)
+                ? collect($pkg['dependencies'])->map(fn ($v, $k) => ['name' => $k, 'version' => $v])->values()
+                : [['name' => 'N/A', 'version' => $pkg['dependencies'] ?? 'No dependencies']];
+
             return [
-                'name' => $pkg['name'],
-                'version' => $pkg['version'],
-                'installed' => $pkg['version-installed'],
-                'dependencies' => is_array($pkg['dependencies']) ? collect($pkg['dependencies'])->map(function ($v, $k) {
-                    return ['name' => $k, 'version' => $v];
-                })->values() : [['name' => 'N/A', 'version' => $pkg['dependencies']]]
+                'name' => $pkg['name'] ?? '',
+                'version' => $pkg['version'] ?? '',
+                'installed' => $pkg['version-installed'] ?? '',
+                'dependencies' => $dependencies,
             ];
         })->values();
 
-        return view('Decomposer::app', compact('packages', 'laravelEnv', 'serverEnv', 'extraStats', 'serverExtras', 'laravelExtras', 'formattedPackages', 'svgIcons'));
+        return view('Decomposer::app', compact(
+            'packages',
+            'laravelEnv',
+            'serverEnv',
+            'extraStats',
+            'serverExtras',
+            'laravelExtras',
+            'formattedPackages',
+            'svgIcons'
+        ));
     }
 }
