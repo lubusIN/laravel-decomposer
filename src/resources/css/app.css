@@ -1,1 +1,18 @@
 @import "tailwindcss";
+@source "../../views";
+@source "../js";
+
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-brand-50: #eff4ff;
+  --color-brand-100: #dbe7fe;
+  --color-brand-200: #bfd5fe;
+  --color-brand-300: #93bbfd;
+  --color-brand-400: #609afa;
+  --color-brand-500: #0052ff;
+  --color-brand-600: #0047e1;
+  --color-brand-700: #0038b3;
+  --color-brand-800: #002d8f;
+  --color-brand-900: #002675;
+}

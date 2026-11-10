@@ -1,6 +1,6 @@
 <p align="center"><img height="50" src=".github/assets/logo.svg"></p>
 
-![Laravel Decomposer](/.github/laravel-decomposer.jpg)
+![Laravel Decomposer](.github/assets/banner.png)
 
 <p>
 <a href="https://packagist.org/packages/lubusin/laravel-decomposer"><img src="https://img.shields.io/packagist/v/lubusIN/laravel-decomposer" alt="Latest Stable Version"></a>
