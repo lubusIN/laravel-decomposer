@@ -14,7 +14,7 @@ class DecomposerController extends Controller
     {
         $composerArray = Decomposer::getComposerArray();
 
-        $packages = Decomposer::getPackagesAndDependencies(array_reverse($composerArray['require']));
+        $packages = Decomposer::getPackagesAndDependencies(array_reverse($composerArray['require'] ?? []));
 
         $version = Decomposer::getDecomposerVersion($composerArray, $packages);
 

@@ -2,7 +2,7 @@
 
 namespace Lubusin\Decomposer;
 
-use App;
+use Illuminate\Support\Facades\App;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
@@ -32,12 +32,13 @@ class Decomposer
     public static function getReportArray()
     {
         $composerArray = self::getComposerArray();
-        $packages = self::getPackagesAndDependencies($composerArray['require']);
+        $requireArray = $composerArray['require'] ?? [];
+        $packages = self::getPackagesAndDependencies($requireArray);
         $version = self::getDecomposerVersion($composerArray, $packages);
 
         $reportArray['Server Environment'] = self::getServerEnv();
         $reportArray['Laravel Environment'] = self::getLaravelEnv($version);
-        $reportArray['Installed Packages'] = self::getPackagesArray($composerArray['require']);
+        $reportArray['Installed Packages'] = self::getPackagesArray($requireArray);
 
         empty(self::getExtraStats()) ? '' : $reportArray['Extra Stats'] = self::getExtraStats();
 
@@ -140,11 +141,14 @@ class Decomposer
             $lockFile = json_decode(file_get_contents(base_path('composer.lock')));
 
             $packageLockDetails = [];
-            foreach ($lockFile->packages as $package) {
-                $packageLockDetails[$package->name] = $package;
+            if (!empty($lockFile->packages)) {
+                foreach ($lockFile->packages as $package) {
+                    $packageLockDetails[$package->name] = $package;
+                }
             }
         }
 
+        $packages = [];
         foreach ($packagesArray as $key => $value) {
             $packageFile = base_path("/vendor/{$key}/composer.json");
 
@@ -195,7 +199,7 @@ class Decomposer
     {
         return array_merge([
             'version' => phpversion(),
-            'server_software' => $_SERVER['SERVER_SOFTWARE'],
+            'server_software' => $_SERVER['SERVER_SOFTWARE'] ?? '',
             'server_os' => php_uname(),
             'database_connection_name' => config('database.default'),
             'ssl_installed' => self::checkSslIsInstalled(),
@@ -220,6 +224,7 @@ class Decomposer
     {
         $packagesArray = self::getPackagesAndDependencies($composerRequireArray);
 
+        $packages = [];
         foreach ($packagesArray as $packageArray) {
             $packages[$packageArray['name']] = $packageArray['version'];
         }
